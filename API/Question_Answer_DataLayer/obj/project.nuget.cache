@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "rlIfRQZ20CozVm12TlsrteWLqZTrV2VmvcF4uiS6O/8j0ejJZRsrufFYbFC1fOpvva/W3Ql9Bf1yW8N+L1S7iQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\benchia.m\\OneDrive - Procter and Gamble\\Documents\\local projects\\Question_Answer\\Question_Answer_DataLayer\\Question_Answer_DataLayer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\benchia.m\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\benchia.m\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
