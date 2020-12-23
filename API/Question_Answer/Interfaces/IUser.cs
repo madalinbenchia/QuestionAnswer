@@ -10,6 +10,6 @@ namespace Question_Answer.Interfaces
     interface IUser
     {
         User Login(string connectionString, string username, string password);
-        User Register(string connectionString, string username, string password);
+        User Register(string connectionString, User userInfo);
     }
 }

@@ -9,6 +9,7 @@ namespace Question_Answer_DataLayer
     {
         #region Variables
         private string username;
+        private string password;
         private int userId;
         private string aboutMe;
         private int age;
@@ -39,6 +40,7 @@ namespace Question_Answer_DataLayer
         public string Username { get => username; set => username = value; }
         public string Location { get => location; set => location = value; }
         public int Role { get => role; set => role = value; }
+        public string Password { get => password; set => password = value; }
         #endregion
 
         #region Methods
@@ -115,7 +117,74 @@ namespace Question_Answer_DataLayer
 
         public User Register(string connectionString, User userInfo)
         {
+            using(SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Error trying to establish a connection with the database.");
+                }
 
+                SqlCommand command = new SqlCommand("AddUsers", conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Username", userInfo.Username));
+                command.Parameters.Add(new SqlParameter("@Password",userInfo.Password));
+                command.Parameters.Add(new SqlParameter("@AboutMe", userInfo.AboutMe));
+                command.Parameters.Add(new SqlParameter("@Age", userInfo.Age));
+                command.Parameters.Add(new SqlParameter("@DisplayName", userInfo.DisplayName));
+                command.Parameters.Add(new SqlParameter("@Location", userInfo.Location));
+                using(SqlDataReader reader = command.ExecuteReader())
+                {
+                    User userResult = new User();
+                    while (reader.Read())
+                    {
+                        
+                        if (!reader.IsDBNull(reader.GetOrdinal("Username")))
+                            userResult.Username = reader.GetString(reader.GetOrdinal("Username"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("Role")))
+                            userResult.Role = reader.GetInt32(reader.GetOrdinal("Role"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("UserId")))
+                            userResult.UserId = reader.GetInt32(reader.GetOrdinal("UserId"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("AboutMe")))
+                            userResult.AboutMe = reader.GetString(reader.GetOrdinal("AboutMe"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("Age")))
+                            userResult.Age = reader.GetInt32(reader.GetOrdinal("Age"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("CreationDate")))
+                            userResult.CreationDate = reader.GetDateTime(reader.GetOrdinal("CreationDate"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("DisplayName")))
+                            userResult.DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("DownVotes")))
+                            userResult.DownVotes = reader.GetInt32(reader.GetOrdinal("DownVotes"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("LastAccessDate")))
+                            userResult.LastAccessDate = reader.GetDateTime(reader.GetOrdinal("LastAccessDate"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("Location")))
+                            userResult.Location = reader.GetString(reader.GetOrdinal("Location"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("Reputation")))
+                            userResult.Reputation = reader.GetInt32(reader.GetOrdinal("Reputation"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("UpVotes")))
+                            userResult.UpVotes = reader.GetInt32(reader.GetOrdinal("UpVotes"));
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("Views")))
+                            userResult.ViewsNumber = reader.GetInt32(reader.GetOrdinal("Views"));
+
+                    }
+                    return userResult;
+                }
+            }
         }
         #endregion
     }

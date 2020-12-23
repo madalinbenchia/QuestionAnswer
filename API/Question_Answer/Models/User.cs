@@ -74,9 +74,18 @@ namespace Question_Answer.Models
             
         }
 
-        public User Register(string connnectionString, string username, string password)
+        public User Register(string connnectionString, User user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Question_Answer_DataLayer.User userInfo = (Question_Answer_DataLayer.User)user;
+                Question_Answer_DataLayer.User userResult = userDataLayerObject.Register(connnectionString, userInfo);
+                return (User)userResult;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
         }
         #endregion
 
@@ -84,6 +93,26 @@ namespace Question_Answer.Models
         public static explicit operator User(Question_Answer_DataLayer.User v)
         {
             User u = new User();
+            u.AboutMe = v.AboutMe;
+            u.Age = v.Age;
+            u.CreationDate = v.CreationDate;
+            u.DisplayName = v.DisplayName;
+            u.DownVotes = v.DownVotes;
+            u.Email = v.Email;
+            u.LastAccessDate = v.LastAccessDate;
+            u.Location = v.Location;
+            u.Reputation = v.Reputation;
+            u.UpVotes = v.UpVotes;
+            u.UserId = v.UserId;
+            u.Username = v.Username;
+            u.ViewsNumber = v.ViewsNumber;
+            u.Role = v.Role;
+            return u;
+        }
+
+        public static explicit operator Question_Answer_DataLayer.User(User v)
+        {
+            Question_Answer_DataLayer.User u = new Question_Answer_DataLayer.User();
             u.AboutMe = v.AboutMe;
             u.Age = v.Age;
             u.CreationDate = v.CreationDate;

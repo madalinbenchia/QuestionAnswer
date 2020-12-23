@@ -47,6 +47,26 @@ namespace Question_Answer.Controllers
             }
         }
 
+        [Route("api/user/register")]
+        [HttpPost]
+        public HttpResponseMessage Register([FromBody] User user)
+        {
+            //password comes encoded in Base64
+            //need tp decode before to send it to Model
+            byte[] data = Convert.FromBase64String(user.Password);
+            string decodedPassword = Encoding.UTF8.GetString(data);
+            try
+            {
+                User userResult = userObject.Register(ConfigurationManager.AppSettings["connnectionString"], user);
+                userResult.Token = GenerateJSONWebToken(userResult);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, userResult);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+
+        }
         #region Utilities
         private string GenerateJSONWebToken(User userInfo)
         {
