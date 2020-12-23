@@ -1,14 +1,20 @@
-﻿using System;
+﻿using Question_Answer.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
+using Question_Answer_DataLayer;
 
 namespace Question_Answer.Models
 {
-    public class User
+    public class User : IUser
     {
         #region Variables
-        private int id;
+        private Question_Answer_DataLayer.User userDataLayerObject;
+        private string username;
+        private string password;
+        private int userId;
         private string aboutMe;
         private int age;
         private DateTime creationDate;
@@ -19,10 +25,14 @@ namespace Question_Answer.Models
         private string email;
         private int reputation;
         private int viewsNumber;
+        private string location;
+        private string token;
+        private int role;
+        
         #endregion
 
         #region Properties
-        public int Id { get => id; set => id = value; }
+        public int UserId { get => userId; set => userId = value; }
         public string AboutMe { get => aboutMe; set => aboutMe = value; }
         public int Age { get => age; set => age = value; }
         public DateTime CreationDate { get => creationDate; set => creationDate = value; }
@@ -33,10 +43,63 @@ namespace Question_Answer.Models
         public string Email { get => email; set => email = value; }
         public int Reputation { get => reputation; set => reputation = value; }
         public int ViewsNumber { get => viewsNumber; set => viewsNumber = value; }
+        public string Username { get => username; set => username = value; }
+        public string Location { get => location; set => location = value; }
+        public string Token { get => token; set => token = value; }
+        public string Password { get => password; set => password = value; }
+        public int Role { get => role; set => role = value; }
+
+
+        #endregion
+
+        #region Contructor
+        public User()
+        {
+           userDataLayerObject = new Question_Answer_DataLayer.User();
+        }
         #endregion
 
         #region Methods
+        public User Login(string connnectionString, string username, string password)
+        {
+            try
+            {
+                Question_Answer_DataLayer.User user = userDataLayerObject.Login(connnectionString, username, password);
+                return (User)user;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
+        }
 
+        public User Register(string connnectionString, string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Utilities
+        public static explicit operator User(Question_Answer_DataLayer.User v)
+        {
+            User u = new User();
+            u.AboutMe = v.AboutMe;
+            u.Age = v.Age;
+            u.CreationDate = v.CreationDate;
+            u.DisplayName = v.DisplayName;
+            u.DownVotes = v.DownVotes;
+            u.Email = v.Email;
+            u.LastAccessDate = v.LastAccessDate;
+            u.Location = v.Location;
+            u.Reputation = v.Reputation;
+            u.UpVotes = v.UpVotes;
+            u.UserId = v.UserId;
+            u.Username = v.Username;
+            u.ViewsNumber = v.ViewsNumber;
+            u.Role = v.Role;
+            return u;
+        }
         #endregion
     }
 }

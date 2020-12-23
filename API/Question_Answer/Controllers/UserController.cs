@@ -1,0 +1,72 @@
+﻿using Microsoft.IdentityModel.Tokens;
+using Question_Answer.Models;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
+using System.Web;
+using System.Web.Http;
+//using System.Web.Mvc;
+using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
+using RouteAttribute = System.Web.Http.RouteAttribute;
+
+namespace Question_Answer.Controllers
+{
+    public class UserController : ApiController
+    {
+        private User userObject;
+        public UserController()
+        {
+            userObject  = new User();
+        }
+
+
+        [Route("api/user/login")]
+        [HttpPost]
+        public HttpResponseMessage Login([FromBody] User user)
+        {
+            //password comes encoded in Base64
+            //need tp decode before to send it to Model
+            byte[] data = Convert.FromBase64String(user.Password);
+            string decodedPassword = Encoding.UTF8.GetString(data);
+            //we don't want to send back as response the password
+            user.Password = string.Empty;
+            try
+            {
+                User userResult = userObject.Login(ConfigurationManager.AppSettings["connnectionString"], user.Username, decodedPassword);
+                userResult.Token = GenerateJSONWebToken(userResult);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, userResult);
+            }
+            catch(Exception ex)
+            {
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
+
+        #region Utilities
+        private string GenerateJSONWebToken(User userInfo)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSettings["TokenSecret"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[] {
+                new Claim(JwtRegisteredClaimNames.Sub, userInfo.Username),
+                new Claim("Role",Convert.ToString(userInfo.Role)),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var token = new JwtSecurityToken("QAIssuer",
+              "QAIssuer",
+              claims,
+              expires: DateTime.Now.AddMinutes(120),
+              signingCredentials: credentials);
+            
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        #endregion
+    }
+}
