@@ -19,6 +19,7 @@ namespace Question_Answer.Controllers
     public class UserController : ApiController
     {
         private User userObject;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public UserController()
         {
             userObject  = new User();
@@ -43,6 +44,7 @@ namespace Question_Answer.Controllers
             }
             catch(Exception ex)
             {
+                log.Error(String.Format("Issue during login -- Error Message: {0} -- StackTrace: {1}", ex.Message, ex.StackTrace));
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
             }
         }
@@ -58,11 +60,21 @@ namespace Question_Answer.Controllers
             try
             {
                 User userResult = userObject.Register(ConfigurationManager.AppSettings["connnectionString"], user);
-                userResult.Token = GenerateJSONWebToken(userResult);
-                return Request.CreateResponse(System.Net.HttpStatusCode.OK, userResult);
+                try
+                {
+                    userResult.Token = GenerateJSONWebToken(userResult);
+                    return Request.CreateResponse(System.Net.HttpStatusCode.OK, userResult);
+                }
+                catch(Exception ex)
+                {
+                    log.Error(String.Format("Issue during register. Error Message: {0} -- Error StackTrace: {1}", ex.Message, ex.StackTrace));
+                    return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+                }
+                
             }
             catch(Exception ex)
             {
+                log.Error(String.Format("Issue during register -- Error Message: {0} -- StackTrace: {1}", ex.Message, ex.StackTrace));
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
             }
 
@@ -78,14 +90,22 @@ namespace Question_Answer.Controllers
                 new Claim("Role",Convert.ToString(userInfo.Role)),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
-
-            var token = new JwtSecurityToken("QAIssuer",
+            try
+            {
+                var token = new JwtSecurityToken("QAIssuer",
               "QAIssuer",
               claims,
               expires: DateTime.Now.AddMinutes(120),
               signingCredentials: credentials);
+
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch(Exception ex)
+            {
+                log.Error(String.Format("Issue generating JWT token. Error Message: {0} -- StackTrace: {1}", ex.Message, ex.StackTrace));
+                throw new Exception(ex.Message);
+            }
             
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
         #endregion
     }
