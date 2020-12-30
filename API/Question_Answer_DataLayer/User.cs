@@ -58,9 +58,9 @@ namespace Question_Answer_DataLayer
                 }
 
                 //build the sql code
-                string sqlCommand = "Select ac.Username, ac.Password, ac.Role, u.Id as UserId, u.AboutMe, u.Age, u.CreationDate, u.DisplayName, u.DownVotes, u.EmailHash, u.LastAccessDate, u.Location, u.Reputation, u.UpVotes, u.Views, u.WebsiteUrl, u.AccountId" +
-                    "from dbo.Accounts ac inner join dbo.Users u on ac.AccountId = u.AccountId" + 
-                    "where ac.Username = " + username + " and ac.Password = " + password;
+                string sqlCommand = "Select ac.Username, ac.Password, ac.Role, u.Id as UserId, u.AboutMe, u.Age, u.CreationDate, u.DisplayName, u.DownVotes, u.EmailHash, u.LastAccessDate, u.Location, u.Reputation, u.UpVotes, u.Views, u.WebsiteUrl, u.AccountId " +
+                    "from dbo.Accounts ac inner join dbo.Users u on ac.AccountId = u.AccountId " + 
+                    "where ac.Username = " + "'" + username + "'" + " and ac.Password = " + "'" + password + "'";
                 SqlCommand command = new SqlCommand(sqlCommand, conn);
                 command.CommandType = System.Data.CommandType.Text;
                 using(SqlDataReader reader = command.ExecuteReader())
