@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Question_Answer_DataLayer
 {
-    class Post
+    public class Post
     {
         #region Variables
         private int id;
@@ -25,7 +25,7 @@ namespace Question_Answer_DataLayer
         private int postTypeId;
         private int score;
         private string tags;
-        private int title;
+        private string title;
         private int viewCount;
         #endregion
 
@@ -47,7 +47,7 @@ namespace Question_Answer_DataLayer
         public int PostTypeId { get => postTypeId; set => postTypeId = value; }
         public int Score { get => score; set => score = value; }
         public string Tags { get => tags; set => tags = value; }
-        public int Title { get => title; set => title = value; }
+        public string Title { get => title; set => title = value; }
         public int ViewCount { get => viewCount; set => viewCount = value; }
         #endregion
 
@@ -56,6 +56,7 @@ namespace Question_Answer_DataLayer
         {
             using(SqlConnection conn = new SqlConnection(connnectionString))
             {
+                List<Post> PostsList = new List<Post>();
                 try
                 {
                     conn.Open();
@@ -102,8 +103,24 @@ namespace Question_Answer_DataLayer
                             temp.LastEditorUserId = reader.GetInt32(reader.GetOrdinal("LastEditorUserId"));
                         if (!reader.IsDBNull(reader.GetOrdinal("OwnerUserId")))
                             temp.OwnerUserId = reader.GetInt32(reader.GetOrdinal("OwnerUserId"));
+                        if (!reader.IsDBNull(reader.GetOrdinal("PostTypeId")))
+                            temp.PostTypeId = reader.GetInt32(reader.GetOrdinal("PostTypeId"));
+                        if (!reader.IsDBNull(reader.GetOrdinal("Score")))
+                            temp.Score = reader.GetInt32(reader.GetOrdinal("Score"));
+                        if (!reader.IsDBNull(reader.GetOrdinal("Tags")))
+                            temp.Tags = reader.GetString(reader.GetOrdinal("Tags"));
+                        if (!reader.IsDBNull(reader.GetOrdinal("Title")))
+                            temp.Title = reader.GetString(reader.GetOrdinal("Title"));
+                        if (!reader.IsDBNull(reader.GetOrdinal("ViewCount")))
+                            temp.ViewCount = reader.GetInt32(reader.GetOrdinal("ViewCount"));
+                        temp.ParentId = 0; //obviously, check the sql statement
+
+                        PostsList.Add(temp);
+
                     }
                 }
+
+                return PostsList;
             }
         }
         #endregion
