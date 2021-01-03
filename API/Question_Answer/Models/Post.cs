@@ -83,6 +83,25 @@ namespace Question_Answer.Models
                 throw new Exception(ex.Message);
             }
         }
+
+        public List<Post> GetAnswers(string connectionString, int parentId)
+        {
+            try
+            {
+                List<Question_Answer_DataLayer.Post> list = postDataLayerObject.GetAnswers(connectionString, parentId);
+                List<Post> answerList = new List<Post>();
+                foreach (Question_Answer_DataLayer.Post answer in list)
+                {
+                    Post currentPost = (Post)answer;
+                    answerList.Add(currentPost);
+                }
+
+                return answerList;
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
 
         #region Utilities

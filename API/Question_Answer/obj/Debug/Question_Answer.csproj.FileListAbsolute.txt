@@ -142,6 +142,7 @@ C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\roslyn\VB
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Antlr3.Runtime.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\EntityFramework.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\EntityFramework.SqlServer.dll
+C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\log4net.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Microsoft.IdentityModel.JsonWebTokens.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Microsoft.IdentityModel.Logging.dll
@@ -149,6 +150,7 @@ C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Microsoft
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Newtonsoft.Json.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Question_Answer_DataLayer.dll
+C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\System.Data.SqlClient.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\System.Net.Http.Formatting.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\System.Web.Helpers.dll
@@ -164,6 +166,7 @@ C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\WebGrease
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Question_Answer_DataLayer.pdb
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\EntityFramework.xml
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\EntityFramework.SqlServer.xml
+C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\log4net.xml
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Microsoft.IdentityModel.JsonWebTokens.xml
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Microsoft.IdentityModel.Logging.xml
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Microsoft.IdentityModel.Tokens.xml
@@ -186,3 +189,6 @@ C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\obj\Debug\Que
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\obj\Debug\Question_Answer.csproj.CopyComplete
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\obj\Debug\Question_Answer.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\obj\Debug\Question_Answer.pdb
+C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Question_Answer_Presentation_Layer.dll
+C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Question_Answer_Presentation_Layer.pdb
+C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Question_Answer_Presentation_Layer.dll.config

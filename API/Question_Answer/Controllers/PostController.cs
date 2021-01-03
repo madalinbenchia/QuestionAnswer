@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using Question_Answer.Models;
@@ -17,12 +19,42 @@ namespace Question_Answer.Controllers
             postObject = new Post();
         }
 
-        [Route("api/post")]
+        //to do:
+        // To add an extra parameter to retrieve top 'x' questions(posts with parentId = 0)
+        // optiona parameter with 0 as default value
+        [Route("api/posts")]
         [HttpGet]
-        public List<Post> GetPosts(string connnectionString, string tags = null)
+        public HttpResponseMessage GetPosts(string tags = null)
         {
-            return postObject.GetPosts(connnectionString, tags);
-            //to do, idk why it doesn't work.
+            try
+            {
+                var result = postObject.GetPosts(ConfigurationManager.AppSettings["connnectionString"], tags);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch(Exception ex)
+            {
+                log.Error(String.Format("Error during get posts endpoint. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+            
+            
         }
+
+        [Route("api/answers")]
+        [HttpGet]
+        public HttpResponseMessage GetAnswers(int parentId)
+        {
+            try
+            {
+                List<Post> result = postObject.GetAnswers(ConfigurationManager.AppSettings["connnectionString"], parentId);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch(Exception ex)
+            {
+                log.Error(String.Format("Error during get answers endpoint. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
+
     }
 }

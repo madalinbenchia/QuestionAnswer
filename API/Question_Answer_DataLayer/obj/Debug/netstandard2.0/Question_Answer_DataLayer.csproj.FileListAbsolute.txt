@@ -1,9 +1,9 @@
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\bin\Debug\netstandard2.0\Question_Answer_DataLayer.deps.json
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\bin\Debug\netstandard2.0\Question_Answer_DataLayer.dll
-C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\obj\Debug\netstandard2.0\Question_Answer_DataLayer.csprojAssemblyReference.cache
+C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\bin\Debug\netstandard2.0\Question_Answer_DataLayer.pdb
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\obj\Debug\netstandard2.0\Question_Answer_DataLayer.AssemblyInfoInputs.cache
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\obj\Debug\netstandard2.0\Question_Answer_DataLayer.AssemblyInfo.cs
-C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\bin\Debug\netstandard2.0\Question_Answer_DataLayer.pdb
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\obj\Debug\netstandard2.0\Question_Answer_DataLayer.csproj.CoreCompileInputs.cache
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\obj\Debug\netstandard2.0\Question_Answer_DataLayer.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\obj\Debug\netstandard2.0\Question_Answer_DataLayer.pdb
+C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer_DataLayer\obj\Debug\netstandard2.0\Question_Answer_DataLayer.csprojAssemblyReference.cache

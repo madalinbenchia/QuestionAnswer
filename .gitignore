@@ -1,0 +1,7 @@
+
+API/.vs/Question_Answer/v16/.suo
+*.dll
+*.config
+API/Question_Answer/bin/Question_Answer.pdb
+API/Question_Answer_DataLayer/bin/Debug/netstandard2.0/Question_Answer_DataLayer.pdb
+API/Question_Answer_DataLayer/obj/Debug/netstandard2.0/Question_Answer_DataLayer.csproj.CoreCompileInputs.cache

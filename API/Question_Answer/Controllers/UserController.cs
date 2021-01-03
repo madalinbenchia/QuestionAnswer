@@ -79,6 +79,10 @@ namespace Question_Answer.Controllers
             }
 
         }
+
+        //To do:
+        // Endpoint to retrieve top rated users based on reputation
+       
         #region Utilities
         private string GenerateJSONWebToken(User userInfo)
         {

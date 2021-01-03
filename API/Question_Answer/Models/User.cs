@@ -125,6 +125,7 @@ namespace Question_Answer.Models
             u.UpVotes = v.UpVotes;
             u.UserId = v.UserId;
             u.Username = v.Username;
+            u.Password = v.Password;
             u.ViewsNumber = v.ViewsNumber;
             u.Role = v.Role;
             return u;
