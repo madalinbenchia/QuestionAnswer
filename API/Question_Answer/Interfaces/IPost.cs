@@ -9,6 +9,6 @@ namespace Question_Answer.Interfaces
 {
     interface IPost
     {
-        List<Post> GetPosts(string connectionString, string tags = null);
+        List<Post> GetPosts(string connectionString, int maxNumber = 0, string tags = null);
     }
 }

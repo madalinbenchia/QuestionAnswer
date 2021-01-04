@@ -19,16 +19,13 @@ namespace Question_Answer.Controllers
             postObject = new Post();
         }
 
-        //to do:
-        // To add an extra parameter to retrieve top 'x' questions(posts with parentId = 0)
-        // optiona parameter with 0 as default value
         [Route("api/posts")]
         [HttpGet]
-        public HttpResponseMessage GetPosts(string tags = null)
+        public HttpResponseMessage GetPosts(int maxNumber = 0, string tags = null)
         {
             try
             {
-                var result = postObject.GetPosts(ConfigurationManager.AppSettings["connnectionString"], tags);
+                var result = postObject.GetPosts(ConfigurationManager.AppSettings["connnectionString"], maxNumber, tags);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
             catch(Exception ex)

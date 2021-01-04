@@ -82,6 +82,21 @@ namespace Question_Answer.Controllers
 
         //To do:
         // Endpoint to retrieve top rated users based on reputation
+        [Route("api/user")]
+        [HttpGet]
+        public HttpResponseMessage GetUsers(int maxNumber = 0)
+        {
+            try
+            {
+                var result = userObject.GetUsers(ConfigurationManager.AppSettings["connnectionString"], maxNumber);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(String.Format("Error during get users endpoint. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
        
         #region Utilities
         private string GenerateJSONWebToken(User userInfo)
