@@ -80,8 +80,6 @@ namespace Question_Answer.Controllers
 
         }
 
-        //To do:
-        // Endpoint to retrieve top rated users based on reputation
         [Route("api/user")]
         [HttpGet]
         public HttpResponseMessage GetUsers(int maxNumber = 0)
