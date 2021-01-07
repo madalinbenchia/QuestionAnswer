@@ -237,6 +237,68 @@ namespace Question_Answer_DataLayer
                 }
             }
         }
+
+        public Post UpdateQuestion(string connectionString, Post question)
+        {
+            #region Validation
+            //check the parameters sent
+            if (question.Id < 0)
+                throw new Exception("Doesn't exist a question with the specified id");
+
+            if (String.IsNullOrEmpty(question.Body) || question.Body == " ")
+                throw new Exception("Quetion should have a body");
+
+            if (String.IsNullOrEmpty(question.LastEditorDisplayName))
+                throw new Exception("User display name provided doesn't exists");
+
+            if (question.LastEditorUserId < 0)
+                throw new Exception("User specified doesn't exists");
+            if (String.IsNullOrEmpty(question.Title) || question.Title == " ")
+                throw new Exception("Title should contain characters.");
+            if (question.ViewCount < 0)
+                throw new Exception("View counter should be greater than 0");
+            #endregion
+
+            Post result = new Post();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Could not establisha a connection with the database");
+                }
+                SqlCommand command = new SqlCommand("sp_UpdateQuestion", conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@FavoriteCount",question.FavouriteCount));
+                command.Parameters.Add(new SqlParameter("@ClosedDate", question.CloseDate));
+                command.Parameters.Add(new SqlParameter("@Id", question.Id));
+                command.Parameters.Add(new SqlParameter("@Body", question.Body));
+                command.Parameters.Add(new SqlParameter("@LastActivityDate", question.LastActivityDate));
+                command.Parameters.Add(new SqlParameter("@LastEditorDisplayName", question.LastEditorDisplayName));
+                command.Parameters.Add(new SqlParameter("@LastEditorUserId", question.LastEditorUserId));
+                command.Parameters.Add(new SqlParameter("@Tags", question.Tags));
+                command.Parameters.Add(new SqlParameter("@Title", question.Title));
+                command.Parameters.Add(new SqlParameter("@ViewCount", question.ViewCount));
+
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            result = ConnvertReaderToPostObject(reader);
+                    }
+                    return result;
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                
+            }
+        }
         #endregion
 
         #region Utilities

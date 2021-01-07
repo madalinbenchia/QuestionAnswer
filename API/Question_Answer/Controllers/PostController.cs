@@ -70,6 +70,23 @@ namespace Question_Answer.Controllers
             }
         }
 
+        [Route("api/post/updatequestion")]
+        [HttpPut]
+        public HttpResponseMessage UpdateQuestion([FromBody] Post question)
+        {
+            try
+            {
+                Post result = postObject.UpdateQuestion(ConfigurationManager.AppSettings["connnectionString"], question);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch(Exception ex)
+            {
+                log.Error(String.Format("Issue updating the question {0}. Error Message: {1} ---- StackTrace:{2}", question.Id, ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
+
+
         [Route("api/post/deletequestion")]
         [HttpDelete]
         public HttpResponseMessage DeleteQuestion(int id)
