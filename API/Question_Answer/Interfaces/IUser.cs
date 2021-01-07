@@ -11,5 +11,6 @@ namespace Question_Answer.Interfaces
     {
         User Login(string connectionString, string username, string password);
         User Register(string connectionString, User userInfo);
+        List<User> GetUsers(string connectionString, int maxNumber = 0);
     }
 }

@@ -186,6 +186,94 @@ namespace Question_Answer_DataLayer
                 }
             }
         }
+
+        public List<User> GetUsers(string connectionString, int maxNumber = 0)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                List<User> usersList = new List<User>();
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+
+                //build the sql statement
+                string sqlStatement = "";
+
+                //if maxNumber is 0, get all users ordered by reputation desc
+                //otherwise, get TOP(maxNumber) users ordered by reputation desc
+                switch (maxNumber)
+                {
+                    case 0:
+                        sqlStatement = "SELECT * FROM Users ORDER BY reputation DESC";
+                        break;
+                    default:
+                        sqlStatement = "SELECT TOP(" + maxNumber + ") * FROM Users ORDER BY reputation DESC";
+                        break;
+                }
+
+                //create the command
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        User temp = ConvertReaderToUserObject(reader);
+                        usersList.Add(temp);
+
+                    }
+                }
+
+                return usersList;
+            }
+        }
+        #endregion
+
+        #region Utilities
+        public User ConvertReaderToUserObject(SqlDataReader reader)
+        {
+            User temp = new User();
+            
+            if (!reader.IsDBNull(reader.GetOrdinal("Id")))
+                temp.UserId = reader.GetInt32(reader.GetOrdinal("Id"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("AboutMe")))
+                temp.AboutMe = reader.GetString(reader.GetOrdinal("AboutMe"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("Age")))
+                temp.Age = reader.GetInt32(reader.GetOrdinal("Age"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("CreationDate")))
+                temp.CreationDate = reader.GetDateTime(reader.GetOrdinal("CreationDate"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("DisplayName")))
+                temp.DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("DownVotes")))
+                temp.DownVotes = reader.GetInt32(reader.GetOrdinal("DownVotes"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("LastAccessDate")))
+                temp.LastAccessDate = reader.GetDateTime(reader.GetOrdinal("LastAccessDate"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("Location")))
+                temp.Location = reader.GetString(reader.GetOrdinal("Location"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("Reputation")))
+                temp.Reputation = reader.GetInt32(reader.GetOrdinal("Reputation"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("UpVotes")))
+                temp.UpVotes = reader.GetInt32(reader.GetOrdinal("UpVotes"));
+
+            if (!reader.IsDBNull(reader.GetOrdinal("Views")))
+                temp.ViewsNumber = reader.GetInt32(reader.GetOrdinal("Views"));
+
+            return temp;
+        }
         #endregion
     }
 }

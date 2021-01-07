@@ -61,12 +61,12 @@ namespace Question_Answer.Models
         #endregion
 
         #region Methods
-        public List<Post> GetPosts(string connnectionString, string tags = null)
+        public List<Post> GetPosts(string connnectionString, int maxNumber = 0, string tags = null)
         {
             try
             {
 
-                List<Question_Answer_DataLayer.Post> list = postDataLayerObject.GetPosts(connnectionString, tags);
+                List<Question_Answer_DataLayer.Post> list = postDataLayerObject.GetPosts(connnectionString, maxNumber, tags);
                 List<Post> postsList = new List<Post>();
 
                 foreach (Question_Answer_DataLayer.Post post in list)

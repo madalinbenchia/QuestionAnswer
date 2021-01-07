@@ -52,7 +52,7 @@ namespace Question_Answer_DataLayer
         #endregion
 
         #region Methods
-        public List<Post> GetPosts(string connnectionString,string tags = null)
+        public List<Post> GetPosts(string connnectionString, int maxNumber = 0, string tags = null)
         {
             using(SqlConnection conn = new SqlConnection(connnectionString))
             {
@@ -69,7 +69,20 @@ namespace Question_Answer_DataLayer
                 //build the sql statement
                 // if tags is null, we will filter the posts based on the tags
                 //otherwise, we will not filter
-                string sqlStatement = "SELECT * FROM Posts WHERE ParentId = 0 ORDER BY score DESC";
+
+                string sqlStatement = "";
+
+                //if maxNumber is 0, get all questions
+                //otherwise, get TOP(maxNumber) questions
+                switch(maxNumber)
+                {
+                    case 0: 
+                        sqlStatement = "SELECT * FROM Posts WHERE ParentId = 0 ORDER BY score DESC";
+                        break;
+                    default:
+                        sqlStatement = "SELECT TOP(" + maxNumber + ") * FROM Posts WHERE ParentId = 0 ORDER BY score DESC";
+                        break;
+                }
 
                 //create the command
                 SqlCommand command = new SqlCommand(sqlStatement, conn);

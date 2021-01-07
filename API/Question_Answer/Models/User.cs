@@ -87,6 +87,27 @@ namespace Question_Answer.Models
             }
             
         }
+
+        public List<User> GetUsers(string connectionString, int maxNumber = 0)
+        {
+            try
+            {
+                List<Question_Answer_DataLayer.User> list = userDataLayerObject.GetUsers(connectionString, maxNumber);
+                List<User> usersList = new List<User>();
+
+                foreach (Question_Answer_DataLayer.User user in list)
+                {
+                    User currentUser = (User)user;
+                    usersList.Add(currentUser);
+                }
+
+                return usersList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
 
         #region Utilities
