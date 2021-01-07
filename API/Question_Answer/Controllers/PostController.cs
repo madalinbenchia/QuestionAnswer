@@ -53,5 +53,38 @@ namespace Question_Answer.Controllers
             }
         }
 
+        [Route("api/post/addquestion")]
+        [HttpPost]
+        public HttpResponseMessage AddQuestion([FromBody]Post question)
+        {
+            try
+            {
+                Post result = new Post();
+                result = postObject.AddQuestion(ConfigurationManager.AppSettings["connnectionString"], question);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch(Exception ex)
+            {
+                log.Error(String.Format("Issue inserting a question. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
+
+        [Route("api/post/deletequestion")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteQuestion(int id)
+        {
+            try
+            {
+                string result = postObject.DeleteQuestion(ConfigurationManager.AppSettings["connnectionString"], id);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch(Exception ex)
+            {
+                log.Error(String.Format("Issue deleting a question. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
+
     }
 }
