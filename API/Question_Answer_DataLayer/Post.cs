@@ -54,7 +54,7 @@ namespace Question_Answer_DataLayer
         #region Methods
         public List<Post> GetPosts(string connnectionString, int maxNumber = 0, string tags = null)
         {
-            using(SqlConnection conn = new SqlConnection(connnectionString))
+            using (SqlConnection conn = new SqlConnection(connnectionString))
             {
                 List<Post> PostsList = new List<Post>();
                 try
@@ -74,9 +74,9 @@ namespace Question_Answer_DataLayer
 
                 //if maxNumber is 0, get all questions
                 //otherwise, get TOP(maxNumber) questions
-                switch(maxNumber)
+                switch (maxNumber)
                 {
-                    case 0: 
+                    case 0:
                         sqlStatement = "SELECT * FROM Posts WHERE ParentId = 0 ORDER BY score DESC";
                         break;
                     default:
@@ -87,9 +87,9 @@ namespace Question_Answer_DataLayer
                 //create the command
                 SqlCommand command = new SqlCommand(sqlStatement, conn);
                 command.CommandType = System.Data.CommandType.Text;
-                using(SqlDataReader reader = command.ExecuteReader())
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    while(reader.Read())
+                    while (reader.Read())
                     {
                         Post temp = ConnvertReaderToPostObject(reader);
                         PostsList.Add(temp);
@@ -128,7 +128,7 @@ namespace Question_Answer_DataLayer
                     while (reader.Read())
                     {
                         result = ConnvertReaderToPostObject(reader);
-                        
+
 
                     }
                 }
@@ -138,7 +138,7 @@ namespace Question_Answer_DataLayer
         }
         public List<Post> GetAnswers(string connectionString, int parentId)
         {
-            using(SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 List<Post> AnswersList = new List<Post>();
                 try
@@ -153,9 +153,9 @@ namespace Question_Answer_DataLayer
                 string sqlStatement = "SELECT * FROM POSTS WHERE ParentId = " + Convert.ToString(parentId) + "ORDER BY Score DESC";
                 SqlCommand command = new SqlCommand(sqlStatement, conn);
                 command.CommandType = System.Data.CommandType.Text;
-                using(SqlDataReader reader = command.ExecuteReader())
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    while(reader.Read())
+                    while (reader.Read())
                     {
                         Post tempAnswer = ConnvertReaderToPostObject(reader);
                         result.Add(tempAnswer);
@@ -164,6 +164,140 @@ namespace Question_Answer_DataLayer
                 return result;
             }
 
+        }
+
+        public Post AddQuestion(string connectionString, Post question)
+        {
+            //check if requirement parameter are sent
+            if (string.IsNullOrEmpty(question.Body) || question.Body == " ")
+                throw new Exception("Question text should not be null or empty.");
+
+            if (question.OwnerUserId < 0)
+                throw new Exception("OwnerUserId specified doesn't exists");
+
+            if (string.IsNullOrEmpty(question.Title) || question.Title == " ")
+                throw new Exception("Question title should not be null or empty");
+
+            //parameter checked, call th sp
+            using(SqlConnection conn = new SqlConnection(connectionString))
+            {
+                Post result = new Post();
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Could not establish a connection with the database");
+                }
+
+                SqlCommand command = new SqlCommand("sp_AddQuestion", conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Text", question.Body));
+                command.Parameters.Add(new SqlParameter("@LastEditorUserId", question.LastEditorUserId));
+                command.Parameters.Add(new SqlParameter("@LastEditorDisplayName", question.LastEditorDisplayName));
+                command.Parameters.Add(new SqlParameter("@OwnerUserId", question.OwnerUserId));
+                command.Parameters.Add(new SqlParameter("@Tags", question.Tags));
+                command.Parameters.Add(new SqlParameter("@Title",question.Title));
+                using(SqlDataReader reader = command.ExecuteReader())
+                {
+                    while(reader.Read())
+                        result = ConnvertReaderToPostObject(reader);
+                    
+                }
+                return result;
+            }
+
+        }
+
+        public string DeleteQuestion(string connnectionString, int questionId)
+        {
+            using (SqlConnection conn = new SqlConnection(connnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+                SqlCommand command = new SqlCommand("sp_DeleteQuestion", conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@QuestionId", questionId));
+                try
+                {
+                    command.ExecuteNonQuery();
+                    return "Success";
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+        }
+
+        public Post UpdateQuestion(string connectionString, Post question)
+        {
+            #region Validation
+            //check the parameters sent
+            if (question.Id < 0)
+                throw new Exception("Doesn't exist a question with the specified id");
+
+            if (String.IsNullOrEmpty(question.Body) || question.Body == " ")
+                throw new Exception("Quetion should have a body");
+
+            if (String.IsNullOrEmpty(question.LastEditorDisplayName))
+                throw new Exception("User display name provided doesn't exists");
+
+            if (question.LastEditorUserId < 0)
+                throw new Exception("User specified doesn't exists");
+            if (String.IsNullOrEmpty(question.Title) || question.Title == " ")
+                throw new Exception("Title should contain characters.");
+            if (question.ViewCount < 0)
+                throw new Exception("View counter should be greater than 0");
+            #endregion
+
+            Post result = new Post();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Could not establisha a connection with the database");
+                }
+                SqlCommand command = new SqlCommand("sp_UpdateQuestion", conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@FavoriteCount",question.FavouriteCount));
+                command.Parameters.Add(new SqlParameter("@ClosedDate", question.CloseDate));
+                command.Parameters.Add(new SqlParameter("@Id", question.Id));
+                command.Parameters.Add(new SqlParameter("@Body", question.Body));
+                command.Parameters.Add(new SqlParameter("@LastActivityDate", question.LastActivityDate));
+                command.Parameters.Add(new SqlParameter("@LastEditorDisplayName", question.LastEditorDisplayName));
+                command.Parameters.Add(new SqlParameter("@LastEditorUserId", question.LastEditorUserId));
+                command.Parameters.Add(new SqlParameter("@Tags", question.Tags));
+                command.Parameters.Add(new SqlParameter("@Title", question.Title));
+                command.Parameters.Add(new SqlParameter("@ViewCount", question.ViewCount));
+
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            result = ConnvertReaderToPostObject(reader);
+                    }
+                    return result;
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                
+            }
         }
         #endregion
 

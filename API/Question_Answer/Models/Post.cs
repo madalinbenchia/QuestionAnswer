@@ -102,6 +102,50 @@ namespace Question_Answer.Models
                 throw new Exception(ex.Message);
             }
         }
+
+        public Post AddQuestion(string connectionString, Post question)
+        {
+            try
+            {
+                Question_Answer_DataLayer.Post questionToDataLayer = (Question_Answer_DataLayer.Post)question;
+                Question_Answer_DataLayer.Post resultDataLayer = postDataLayerObject.AddQuestion(connectionString, questionToDataLayer);
+                Post result = (Post)resultDataLayer;
+                return result;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public string DeleteQuestion(string connectionString, int questionId)
+        {
+            try
+            {
+                string result = postDataLayerObject.DeleteQuestion(connectionString, questionId);
+                return result;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public Post UpdateQuestion(string connectionString, Post question)
+        {
+            try
+            {
+                Question_Answer_DataLayer.Post questionToDataLayer = (Question_Answer_DataLayer.Post)question;
+                Question_Answer_DataLayer.Post resultDataLayer = postDataLayerObject.UpdateQuestion(connectionString, questionToDataLayer);
+                Post result = (Post)resultDataLayer;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+       
         #endregion
 
         #region Utilities
