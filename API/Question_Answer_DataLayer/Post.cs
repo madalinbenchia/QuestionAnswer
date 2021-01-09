@@ -268,7 +268,7 @@ namespace Question_Answer_DataLayer
                 }
                 catch
                 {
-                    throw new Exception("Could not establisha a connection with the database");
+                    throw new Exception("Could not establish a connection with the database");
                 }
                 SqlCommand command = new SqlCommand("sp_UpdateQuestion", conn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
@@ -297,6 +297,77 @@ namespace Question_Answer_DataLayer
                     throw new Exception(ex.Message);
                 }
                 
+            }
+        }
+
+        public Post AddAnswer(string connectionString, Post answer)
+        {
+            //check if requirement parameter are sent
+            if (string.IsNullOrEmpty(answer.Body) || answer.Body == " ")
+                throw new Exception("Answer text should not be null or empty.");
+
+            if (answer.OwnerUserId < 0)
+                throw new Exception("OwnerUserId specified doesn't exist");
+
+            if (answer.ParentId < 0)
+                throw new Exception("ParentId must be a valid Question Id");
+
+            //parameter checked, call the sp
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                Post result = new Post();
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Could not establish a connection with the database");
+                }
+
+                SqlCommand command = new SqlCommand("sp_AddAnswer", conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Text", answer.Body));
+                command.Parameters.Add(new SqlParameter("@LastEditorUserId", answer.LastEditorUserId));
+                command.Parameters.Add(new SqlParameter("@LastEditorDisplayName", answer.LastEditorDisplayName));
+                command.Parameters.Add(new SqlParameter("@OwnerUserId", answer.OwnerUserId));
+                command.Parameters.Add(new SqlParameter("@ParentId", answer.ParentId));
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                        result = ConnvertReaderToPostObject(reader);
+
+                }
+                return result;
+            }
+
+        }
+
+        public string DeleteAnswer(string connnectionString, int answerId)
+        {
+            using (SqlConnection conn = new SqlConnection(connnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+
+                SqlCommand command = new SqlCommand("sp_DeleteAnswer", conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@AnswerId", answerId));
+                try
+                {
+                    command.ExecuteNonQuery();
+                    return "Success";
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
         }
         #endregion

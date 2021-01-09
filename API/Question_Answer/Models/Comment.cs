@@ -58,6 +58,34 @@ namespace Question_Answer.Models
             }
         }
 
+        public Comment AddComment(string connectionString, Comment comment)
+        {
+            try
+            {
+                Question_Answer_DataLayer.Comment commentToDataLayer = (Question_Answer_DataLayer.Comment)comment;
+                Question_Answer_DataLayer.Comment resultDataLayer = commentDataLayerObject.AddComment(connectionString, commentToDataLayer);
+                Comment result = (Comment)resultDataLayer;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public string DeleteComment(string connectionString, int commentId)
+        {
+            try
+            {
+                string result = commentDataLayerObject.DeleteComment(connectionString, commentId);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Utilities
@@ -65,6 +93,18 @@ namespace Question_Answer.Models
         public static explicit operator Comment(Question_Answer_DataLayer.Comment v)
         {
             Comment result = new Comment();
+            result.Id = v.Id;
+            result.PostId = v.PostId;
+            result.CreationDate = v.CreationDate;
+            result.Score = v.Score;
+            result.Text = v.Text;
+            result.UserId = v.UserId;
+            return result;
+        }
+
+        public static explicit operator Question_Answer_DataLayer.Comment(Comment v)
+        {
+            Question_Answer_DataLayer.Comment result = new Question_Answer_DataLayer.Comment();
             result.Id = v.Id;
             result.PostId = v.PostId;
             result.CreationDate = v.CreationDate;
