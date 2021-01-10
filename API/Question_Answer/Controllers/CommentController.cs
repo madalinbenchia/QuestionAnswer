@@ -35,8 +35,39 @@ namespace Question_Answer.Controllers
                 log.Error(String.Format("Error during get comments endpoint. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
             }
+        }
 
+        [Route("api/comment/addcomment")]
+        [HttpPost]
+        public HttpResponseMessage AddComment([FromBody] Comment comment)
+        {
+            try
+            {
+                Comment result = new Comment();
+                result = commentObject.AddComment(ConfigurationManager.AppSettings["connnectionString"], comment);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(String.Format("Issue inserting a comment. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
 
+        [Route("api/comment/deletecomment")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteComment(int id)
+        {
+            try
+            {
+                string result = commentObject.DeleteComment(ConfigurationManager.AppSettings["connnectionString"], id);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(String.Format("Issue deleting a comment. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
         }
         #endregion
     }

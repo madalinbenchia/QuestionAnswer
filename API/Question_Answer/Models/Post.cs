@@ -145,7 +145,35 @@ namespace Question_Answer.Models
                 throw new Exception(ex.Message);
             }
         }
-       
+
+        public Post AddAnswer(string connectionString, Post answer)
+        {
+            try
+            {
+                Question_Answer_DataLayer.Post answerToDataLayer = (Question_Answer_DataLayer.Post)answer;
+                Question_Answer_DataLayer.Post resultDataLayer = postDataLayerObject.AddAnswer(connectionString, answerToDataLayer);
+                Post result = (Post)resultDataLayer;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public string DeleteAnswer(string connectionString, int answerId)
+        {
+            try
+            {
+                string result = postDataLayerObject.DeleteAnswer(connectionString, answerId);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Utilities
