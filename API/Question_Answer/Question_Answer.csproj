@@ -183,6 +183,7 @@
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\VoteController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -195,6 +196,7 @@
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Utilities.cs" />
+    <Compile Include="Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
