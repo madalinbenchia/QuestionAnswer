@@ -6,10 +6,10 @@ using System.Web;
 
 namespace Question_Answer.Models
 {
-    public class Post : IPost
+    public abstract class Post
     {
         #region Variables
-        private Question_Answer_DataLayer.Post postDataLayerObject;
+       
         private int id;
         private int acceptedAnswerId;
         private int answerCount;
@@ -53,131 +53,20 @@ namespace Question_Answer.Models
         public int ViewCount { get => viewCount; set => viewCount = value; }
         #endregion
 
-        #region Constructor
-        public Post()
-        {
-            postDataLayerObject = new Question_Answer_DataLayer.Post();
-        }
-        #endregion
-
         #region Methods
-        public List<Post> GetPosts(string connnectionString, int maxNumber = 0, string tags = null)
-        {
-            try
-            {
+        public abstract List<Post> GetPosts(string connnectionString, int maxNumber = 0, string tags = null, int parentId = 0);
 
-                List<Question_Answer_DataLayer.Post> list = postDataLayerObject.GetPosts(connnectionString, maxNumber, tags);
-                List<Post> postsList = new List<Post>();
+        public abstract Post AddPost(string connectionString, Post post);
 
-                foreach (Question_Answer_DataLayer.Post post in list)
-                {
-                    Post currentPost = (Post)post;
-                    postsList.Add(currentPost);
-                }
+        public abstract string DeletePost(string connectionString, int id);
+        public abstract Post UpdatePost(string connectionString, Post question);
 
-                return postsList;
-            }
 
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public List<Post> GetAnswers(string connectionString, int parentId)
-        {
-            try
-            {
-                List<Question_Answer_DataLayer.Post> list = postDataLayerObject.GetAnswers(connectionString, parentId);
-                List<Post> answerList = new List<Post>();
-                foreach (Question_Answer_DataLayer.Post answer in list)
-                {
-                    Post currentPost = (Post)answer;
-                    answerList.Add(currentPost);
-                }
-
-                return answerList;
-            }catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public Post AddQuestion(string connectionString, Post question)
-        {
-            try
-            {
-                Question_Answer_DataLayer.Post questionToDataLayer = (Question_Answer_DataLayer.Post)question;
-                Question_Answer_DataLayer.Post resultDataLayer = postDataLayerObject.AddQuestion(connectionString, questionToDataLayer);
-                Post result = (Post)resultDataLayer;
-                return result;
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public string DeleteQuestion(string connectionString, int questionId)
-        {
-            try
-            {
-                string result = postDataLayerObject.DeleteQuestion(connectionString, questionId);
-                return result;
-            }
-            catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public Post UpdateQuestion(string connectionString, Post question)
-        {
-            try
-            {
-                Question_Answer_DataLayer.Post questionToDataLayer = (Question_Answer_DataLayer.Post)question;
-                Question_Answer_DataLayer.Post resultDataLayer = postDataLayerObject.UpdateQuestion(connectionString, questionToDataLayer);
-                Post result = (Post)resultDataLayer;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public Post AddAnswer(string connectionString, Post answer)
-        {
-            try
-            {
-                Question_Answer_DataLayer.Post answerToDataLayer = (Question_Answer_DataLayer.Post)answer;
-                Question_Answer_DataLayer.Post resultDataLayer = postDataLayerObject.AddAnswer(connectionString, answerToDataLayer);
-                Post result = (Post)resultDataLayer;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public string DeleteAnswer(string connectionString, int answerId)
-        {
-            try
-            {
-                string result = postDataLayerObject.DeleteAnswer(connectionString, answerId);
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
 
         #endregion
 
         #region Utilities
-        public static explicit operator Post(Question_Answer_DataLayer.Post q)
+        /*public static explicit operator Post(Question_Answer_DataLayer.Post q)
         {
             Post p = new Post();
             p.Id = q.Id;
@@ -200,7 +89,8 @@ namespace Question_Answer.Models
             p.Title = q.Title;
             p.ViewCount = q.ViewCount;
             return p;
-        }
+        }*/
+
 
         public static explicit operator Question_Answer_DataLayer.Post(Post q)
         {

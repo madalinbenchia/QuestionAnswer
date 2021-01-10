@@ -272,6 +272,8 @@ namespace Question_Answer_DataLayer
                 }
                 SqlCommand command = new SqlCommand("sp_UpdateQuestion", conn);
                 command.CommandType = System.Data.CommandType.StoredProcedure;
+                if (question.AcceptedAnswerId != 0 || question.AcceptedAnswerId != null)
+                    command.Parameters.Add(new SqlParameter("@AcceptedAnswerId", question.AcceptedAnswerId));
                 command.Parameters.Add(new SqlParameter("@FavoriteCount",question.FavouriteCount));
                 command.Parameters.Add(new SqlParameter("@ClosedDate", question.CloseDate));
                 command.Parameters.Add(new SqlParameter("@Id", question.Id));
@@ -368,6 +370,51 @@ namespace Question_Answer_DataLayer
                 {
                     throw new Exception(ex.Message);
                 }
+            }
+        }
+
+        public Post UpdateAnswer(string connectionString, Post answer)
+        {
+            //check if requirement parameter are sent
+            if (string.IsNullOrEmpty(answer.Body) || answer.Body == " ")
+                throw new Exception("Answer text should not be null or empty.");
+
+            if (answer.OwnerUserId < 0)
+                throw new Exception("OwnerUserId specified doesn't exist");
+
+            if (answer.ParentId < 0)
+                throw new Exception("ParentId must be a valid Question Id");
+
+            //parameter checked, call the sp
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                Post result = new Post();
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Could not establish a connection with the database");
+                }
+
+                SqlCommand command = new SqlCommand("sp_UpdateAnswer", conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", answer.Id));
+                command.Parameters.Add(new SqlParameter("@Body", answer.Body));
+                command.Parameters.Add(new SqlParameter("@FavoriteCount", answer.FavouriteCount));
+                command.Parameters.Add(new SqlParameter("@LastEditorDisplayName", answer.LastEditorDisplayName));
+                command.Parameters.Add(new SqlParameter("@LastEditorUserId", answer.LastEditorUserId));
+                command.Parameters.Add(new SqlParameter("@Tags", answer.Tags));
+                command.Parameters.Add(new SqlParameter("@Title", answer.Title));
+                command.Parameters.Add(new SqlParameter("@ViewCount", answer.Title));
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                        result = ConnvertReaderToPostObject(reader);
+
+                }
+                return result;
             }
         }
         #endregion

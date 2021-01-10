@@ -135,6 +135,44 @@ namespace Question_Answer_DataLayer
                 }
             }
         }
+
+        public Comment UpdateComment(string connectionString, Comment comment)
+        {
+            if (string.IsNullOrEmpty(comment.Text) || comment.Text == " ")
+                throw new Exception("Comment text should not be null or empty.");
+
+            if (comment.UserId < 0)
+                throw new Exception("UserId specified doesn't exist.");
+
+            if (comment.PostId < 0)
+                throw new Exception("PostId must be a valid Question or Answer Id.");
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                Comment result = new Comment();
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Could not establish a connection with the database");
+                }
+
+                SqlCommand command = new SqlCommand("sp_UpdateComment", conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", comment.Id));
+                command.Parameters.Add(new SqlParameter("@Text", comment.Text));
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                        result = ConvertReaderToCommentObject(reader);
+                }
+
+                return result;
+            }
+        }
         #endregion
 
         #region Utilities

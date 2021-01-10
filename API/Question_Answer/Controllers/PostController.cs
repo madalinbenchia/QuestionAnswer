@@ -12,11 +12,13 @@ namespace Question_Answer.Controllers
 {
     public class PostController : ApiController
     {
-        private Post postObject;
+        private Question questionObject;
+        private Answer answerObject;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public PostController()
         {
-            postObject = new Post();
+            questionObject = new Question();
+            answerObject = new Answer();
         }
 
         [Route("api/posts")]
@@ -25,7 +27,7 @@ namespace Question_Answer.Controllers
         {
             try
             {
-                var result = postObject.GetPosts(ConfigurationManager.AppSettings["connnectionString"], maxNumber, tags);
+                var result = questionObject.GetPosts(ConfigurationManager.AppSettings["connnectionString"], maxNumber, tags);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
             catch(Exception ex)
@@ -43,7 +45,7 @@ namespace Question_Answer.Controllers
         {
             try
             {
-                List<Post> result = postObject.GetAnswers(ConfigurationManager.AppSettings["connnectionString"], parentId);
+                List<Post> result = answerObject.GetPosts(ConfigurationManager.AppSettings["connnectionString"], 0, null, parentId);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
             catch(Exception ex)
@@ -55,12 +57,12 @@ namespace Question_Answer.Controllers
 
         [Route("api/post/addquestion")]
         [HttpPost]
-        public HttpResponseMessage AddQuestion([FromBody]Post question)
+        public HttpResponseMessage AddQuestion([FromBody]Question question)
         {
             try
             {
-                Post result = new Post();
-                result = postObject.AddQuestion(ConfigurationManager.AppSettings["connnectionString"], question);
+                Question result = new Question();
+                result = (Question)questionObject.AddPost(ConfigurationManager.AppSettings["connnectionString"], question);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
             catch(Exception ex)
@@ -72,11 +74,11 @@ namespace Question_Answer.Controllers
 
         [Route("api/post/updatequestion")]
         [HttpPut]
-        public HttpResponseMessage UpdateQuestion([FromBody] Post question)
+        public HttpResponseMessage UpdateQuestion([FromBody] Question question)
         {
             try
             {
-                Post result = postObject.UpdateQuestion(ConfigurationManager.AppSettings["connnectionString"], question);
+                Question result = (Question)questionObject.UpdatePost(ConfigurationManager.AppSettings["connnectionString"], question);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
             catch(Exception ex)
@@ -93,7 +95,7 @@ namespace Question_Answer.Controllers
         {
             try
             {
-                string result = postObject.DeleteQuestion(ConfigurationManager.AppSettings["connnectionString"], id);
+                string result = questionObject.DeletePost(ConfigurationManager.AppSettings["connnectionString"], id);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
             catch(Exception ex)
@@ -105,12 +107,12 @@ namespace Question_Answer.Controllers
 
         [Route("api/post/addanswer")]
         [HttpPost]
-        public HttpResponseMessage AddAnswer([FromBody] Post answer)
+        public HttpResponseMessage AddAnswer([FromBody] Answer answer)
         {
             try
             {
-                Post result = new Post();
-                result = postObject.AddAnswer(ConfigurationManager.AppSettings["connnectionString"], answer);
+                Answer result = new Answer();
+                result = (Answer)answerObject.AddPost(ConfigurationManager.AppSettings["connnectionString"], answer);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
             catch (Exception ex)
@@ -126,12 +128,28 @@ namespace Question_Answer.Controllers
         {
             try
             {
-                string result = postObject.DeleteAnswer(ConfigurationManager.AppSettings["connnectionString"], id);
+                string result = answerObject.DeletePost(ConfigurationManager.AppSettings["connnectionString"], id);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {
                 log.Error(String.Format("Issue deleting an answer. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
+
+        [Route("api/post/updateanswer")]
+        [HttpPut]
+        public HttpResponseMessage UpdateAnswer([FromBody] Answer answer)
+        {
+            try
+            {
+                Answer result = (Answer)answerObject.UpdatePost(ConfigurationManager.AppSettings["connnectionString"], answer);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(String.Format("Issue updating the question {0}. Error Message: {1} ---- StackTrace:{2}", answer.Id, ex.Message, ex.StackTrace));
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
             }
         }

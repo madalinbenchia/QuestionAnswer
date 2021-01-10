@@ -69,6 +69,23 @@ namespace Question_Answer.Controllers
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
             }
         }
+
+        [Route("api/commment/updatecomment")]
+        [HttpPut]
+        public HttpResponseMessage UpdateComment([FromBody] Comment comment)
+        {
+            try
+            {
+                Comment result = new Comment();
+                result = commentObject.UpdateComment(ConfigurationManager.AppSettings["connnectionString"], comment);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(String.Format("Issue inserting a comment. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
         #endregion
     }
 }

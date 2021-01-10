@@ -86,6 +86,20 @@ namespace Question_Answer.Models
             }
         }
 
+        public Comment UpdateComment(string connnectionString, Comment comment)
+        {
+            try
+            {
+                Question_Answer_DataLayer.Comment commentToDataLayer = (Question_Answer_DataLayer.Comment)comment;
+                Question_Answer_DataLayer.Comment resultDataLayer = commentDataLayerObject.UpdateComment(connnectionString, commentToDataLayer);
+                Comment result = (Comment)resultDataLayer;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
 
         #region Utilities
