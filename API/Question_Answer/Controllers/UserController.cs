@@ -96,7 +96,7 @@ namespace Question_Answer.Controllers
             }
         }
 
-        [Route("api/user_id")]
+        [Route("api/me")]
         [HttpGet]
         public HttpResponseMessage GetUser(int id = 0)
         {
