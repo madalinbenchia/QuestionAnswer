@@ -95,7 +95,23 @@ namespace Question_Answer.Controllers
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
             }
         }
-       
+
+        [Route("api/user_id")]
+        [HttpGet]
+        public HttpResponseMessage GetUser(int id = 0)
+        {
+            try
+            {
+                var result = userObject.GetUser(ConfigurationManager.AppSettings["connnectionString"], id);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(String.Format("Error during get user by id endpoint. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
+
         #region Utilities
         private string GenerateJSONWebToken(User userInfo)
         {
