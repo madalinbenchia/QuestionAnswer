@@ -108,6 +108,21 @@ namespace Question_Answer.Models
                 throw new Exception(ex.Message);
             }
         }
+
+        public User GetUser(string connectionString, int id)
+        {
+            try
+            {
+                Question_Answer_DataLayer.User dataUser = userDataLayerObject.GetUser(connectionString, id);
+                User user = (User)dataUser;
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
 
         #region Utilities
