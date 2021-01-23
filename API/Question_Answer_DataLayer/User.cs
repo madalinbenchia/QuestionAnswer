@@ -232,6 +232,35 @@ namespace Question_Answer_DataLayer
                 return usersList;
             }
         }
+
+        public User GetUser(string connectionString, int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                User result = new User();
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+
+                string sqlStatement = "SELECT * FROM Users WHERE Id = " + id;
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result = ConvertReaderToUserObject(reader);
+                    }
+                }
+
+                return result;
+            }
+        }
         #endregion
 
         #region Utilities
