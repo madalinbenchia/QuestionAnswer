@@ -79,6 +79,29 @@ namespace Question_Answer.Models
                 throw new Exception(ex.Message);
             }
         }
+
+        public List<Post> SearchPosts(string connnectionString, string searchString = null)
+        {
+            try
+            {
+
+                List<Question_Answer_DataLayer.Post> list = postDataLayerObject.SearchPosts(connnectionString, searchString);
+                List<Post> postsList = new List<Post>();
+
+                foreach (Question_Answer_DataLayer.Post post in list)
+                {
+                    Question currentPost = (Question)post;
+                    postsList.Add(currentPost);
+                }
+
+                return postsList;
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
 
         #region Utilities

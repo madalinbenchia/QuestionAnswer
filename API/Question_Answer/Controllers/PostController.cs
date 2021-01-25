@@ -30,13 +30,13 @@ namespace Question_Answer.Controllers
                 var result = questionObject.GetPosts(ConfigurationManager.AppSettings["connnectionString"], maxNumber, tags);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(String.Format("Error during get posts endpoint. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
             }
-            
-            
+
+
         }
 
         [Route("api/answers")]
@@ -48,7 +48,7 @@ namespace Question_Answer.Controllers
                 List<Post> result = answerObject.GetPosts(ConfigurationManager.AppSettings["connnectionString"], 0, null, parentId);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(String.Format("Error during get answers endpoint. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
@@ -57,7 +57,7 @@ namespace Question_Answer.Controllers
 
         [Route("api/post/addquestion")]
         [HttpPost]
-        public HttpResponseMessage AddQuestion([FromBody]Question question)
+        public HttpResponseMessage AddQuestion([FromBody] Question question)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace Question_Answer.Controllers
                 result = (Question)questionObject.AddPost(ConfigurationManager.AppSettings["connnectionString"], question);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(String.Format("Issue inserting a question. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
@@ -81,7 +81,7 @@ namespace Question_Answer.Controllers
                 Question result = (Question)questionObject.UpdatePost(ConfigurationManager.AppSettings["connnectionString"], question);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(String.Format("Issue updating the question {0}. Error Message: {1} ---- StackTrace:{2}", question.Id, ex.Message, ex.StackTrace));
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
@@ -98,7 +98,7 @@ namespace Question_Answer.Controllers
                 string result = questionObject.DeletePost(ConfigurationManager.AppSettings["connnectionString"], id);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.Error(String.Format("Issue deleting a question. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
                 return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
@@ -154,5 +154,21 @@ namespace Question_Answer.Controllers
             }
         }
 
+        [Route("api/search")]
+        [HttpGet]
+        public HttpResponseMessage SearchPosts(string searchString = null)
+        {
+            try
+            {
+                var result = questionObject.SearchPosts(ConfigurationManager.AppSettings["connnectionString"], searchString);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(String.Format("Error during search posts endpoint. Error Message: {0} --- StackTrace: {1}", ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+
+        }
     }
 }

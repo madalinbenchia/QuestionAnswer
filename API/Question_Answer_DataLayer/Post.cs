@@ -417,10 +417,92 @@ namespace Question_Answer_DataLayer
                 return result;
             }
         }
-        #endregion
 
-        #region Utilities
-        public Post ConnvertReaderToPostObject(SqlDataReader reader)
+        public List<Post> SearchPosts(string connectionString, string searchString = null)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                List<Post> PostsList = new List<Post>();
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+
+                string sqlStatement = "";
+
+                if (searchString != null)
+                {
+                    char[] delimiterChars = { ' ', ',', ':', '\t', '\n', ';', '?', '!' };
+
+                    string[] searchWords = searchString.Split(delimiterChars);
+                    List<string> list = new List<string>(searchWords);
+                    List<int> indexList = new List<int>();
+
+                    foreach (string word in list)
+                    {
+                        if (word.Length <= 1 )
+                        {
+                            int idx = list.IndexOf(word);
+                            if (idx >= 0)
+                            {
+                                indexList.Add(idx);
+                            }
+                            
+                        }
+                    }
+
+                    int ctr = 0;
+                    foreach (int index in indexList)
+                    {
+                        list.RemoveAt(index - ctr);
+                        ctr++;
+                    }
+
+                    sqlStatement = "SELECT * FROM Posts WHERE ParentId=0 AND (";
+
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        sqlStatement += "Tags like '% " + list[i] + " %' OR " +
+                                "Title like '% " + list[i] + " %' ";
+
+                        if (i != list.Count - 1)
+                        {
+                            sqlStatement += "OR ";
+                        }
+                    }
+
+                    sqlStatement += ") ORDER BY score DESC";
+
+                }
+                else
+                {
+                    sqlStatement = "SELECT * FROM Posts WHERE ParentId=0 ORDER BY score DESC";
+                }
+
+                //create the command
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Post temp = ConnvertReaderToPostObject(reader);
+                        PostsList.Add(temp);
+
+                    }
+                }
+
+                return PostsList;
+            }
+        }
+                #endregion
+
+                #region Utilities
+                public Post ConnvertReaderToPostObject(SqlDataReader reader)
         {
             Post temp = new Post();
             if (!reader.IsDBNull(reader.GetOrdinal("Id")))
