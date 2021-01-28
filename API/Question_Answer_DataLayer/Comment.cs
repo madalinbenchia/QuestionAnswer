@@ -97,7 +97,7 @@ namespace Question_Answer_DataLayer
                 command.Parameters.Add(new SqlParameter("@Text", comment.Text));
                 command.Parameters.Add(new SqlParameter("@PostId", comment.PostId));
                 command.Parameters.Add(new SqlParameter("@UserId", comment.UserId));
-
+                command.Parameters.Add(new SqlParameter("@CreationDate", comment.CreationDate));
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())

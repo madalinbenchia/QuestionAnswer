@@ -199,6 +199,8 @@ namespace Question_Answer_DataLayer
                 command.Parameters.Add(new SqlParameter("@OwnerUserId", question.OwnerUserId));
                 command.Parameters.Add(new SqlParameter("@Tags", question.Tags));
                 command.Parameters.Add(new SqlParameter("@Title",question.Title));
+                command.Parameters.Add(new SqlParameter("@CreationDate", question.CreationDate));
+                command.Parameters.Add(new SqlParameter("@LastActivityDate", question.LastActivityDate));
                 using(SqlDataReader reader = command.ExecuteReader())
                 {
                     while(reader.Read())
@@ -334,6 +336,8 @@ namespace Question_Answer_DataLayer
                 command.Parameters.Add(new SqlParameter("@LastEditorDisplayName", answer.LastEditorDisplayName));
                 command.Parameters.Add(new SqlParameter("@OwnerUserId", answer.OwnerUserId));
                 command.Parameters.Add(new SqlParameter("@ParentId", answer.ParentId));
+                command.Parameters.Add(new SqlParameter("@CreationDate", answer.CreationDate));
+                command.Parameters.Add(new SqlParameter("@LastActivityDate", answer.LastActivityDate));
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -408,6 +412,8 @@ namespace Question_Answer_DataLayer
                 command.Parameters.Add(new SqlParameter("@Tags", answer.Tags));
                 command.Parameters.Add(new SqlParameter("@Title", answer.Title));
                 command.Parameters.Add(new SqlParameter("@ViewCount", answer.Title));
+                command.Parameters.Add(new SqlParameter("@LastActivityDate", answer.LastActivityDate));
+                command.Parameters.Add(new SqlParameter("@LastEditDate", answer.LastEditDate));
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -466,8 +472,8 @@ namespace Question_Answer_DataLayer
 
                     for (int i = 0; i < list.Count; i++)
                     {
-                        sqlStatement += "Tags like '% " + list[i] + " %' OR " +
-                                "Title like '% " + list[i] + " %' ";
+                        sqlStatement += "Tags like '%<" + list[i] + ">%' OR " +
+                                "Title like '%" + list[i] + "%' ";
 
                         if (i != list.Count - 1)
                         {

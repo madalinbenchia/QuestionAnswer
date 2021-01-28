@@ -11,12 +11,12 @@ namespace Question_Answer_Presentation_Layer.Controllers
 {
     public class QuestionController : ApiController
     {
-        private QuestionUIPage.Question questionObject;
+        private QuestionUIPage questionObject;
 
         #region Constructor
         public QuestionController()
         {
-            questionObject = new QuestionUIPage.Question();
+            questionObject = new QuestionUIPage();
         }
 
         #endregion

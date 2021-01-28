@@ -63,6 +63,7 @@ namespace Question_Answer.Models
             try
             {
                 Question_Answer_DataLayer.Comment commentToDataLayer = (Question_Answer_DataLayer.Comment)comment;
+                commentToDataLayer.CreationDate = DateTime.Now;
                 Question_Answer_DataLayer.Comment resultDataLayer = commentDataLayerObject.AddComment(connectionString, commentToDataLayer);
                 Comment result = (Comment)resultDataLayer;
                 return result;

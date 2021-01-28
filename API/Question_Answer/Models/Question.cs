@@ -42,6 +42,8 @@ namespace Question_Answer.Models
             try
             {
                 Question_Answer_DataLayer.Post questionToDataLayer = (Question_Answer_DataLayer.Post)post;
+                questionToDataLayer.CreationDate = DateTime.Now;
+                questionToDataLayer.LastActivityDate = DateTime.Now;
                 Question_Answer_DataLayer.Post resultDataLayer = postDataLayerObject.AddQuestion(connectionString, questionToDataLayer);
                 Question result = (Question)resultDataLayer;
                 return result;

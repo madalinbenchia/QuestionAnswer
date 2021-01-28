@@ -1,5 +1,4 @@
-﻿using Question_Answer_DataLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -9,6 +8,58 @@ namespace Question_Answer_Presentation_Layer.Models
 {
     public class QuestionUIPage
     {
+        #region Variables
+        public Commment comment;
+        public Answer answer;
+        public Question question;
+        Question_Answer_DataLayer.Post postDataLayerObject;
+        #endregion
+
+        #region Constructor
+        public QuestionUIPage()
+        {
+             comment = new Commment();
+              answer = new Answer();
+             question = new Question();
+             postDataLayerObject = new Question_Answer_DataLayer.Post();
+        }
+        #endregion
+
+        #region Methods
+        public Question GetQuestion(string connectionString, int id)
+
+        {
+            try
+            {
+
+                Question_Answer_DataLayer.Post post = postDataLayerObject.GetPost(connectionString, id);
+                Question question = (Question)post;
+                //fill the question object with the answers
+                var answers = answer.GetAnswersForAQuestion(connectionString, question.Id);
+                foreach (var tempAnswer in answers)
+                    question.AnswersList.Add(tempAnswer);
+
+
+                //foreach answer, we need to fill with comments
+                foreach (var temp in question.AnswersList)
+                {
+                    var comments = comment.GetAllCommentsForAnAnswer(connectionString, temp.Id);
+                    temp.CommentsList = new List<Commment>();
+                    foreach (var comm in comments)
+                        temp.CommentsList.Add(comm);
+                }
+
+                return question;
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        #endregion
+        
+
         public class Commment
         {
             Question_Answer_DataLayer.Comment commentDataLayerObject;
@@ -39,7 +90,7 @@ namespace Question_Answer_Presentation_Layer.Models
             #endregion
 
             #region Utilities
-            public static explicit operator Commment(Comment v)
+            public static explicit operator Commment(Question_Answer_DataLayer.Comment v)
             {
                 Commment comm = new Commment();
                 comm.Id = v.Id;
@@ -76,7 +127,7 @@ namespace Question_Answer_Presentation_Layer.Models
 
 
         }
-       public class Answer
+        public class Answer
         {
             Question_Answer_DataLayer.Post postDataLayerObject;
 
@@ -158,7 +209,7 @@ namespace Question_Answer_Presentation_Layer.Models
             #endregion
 
             #region Utilities
-            public static explicit operator Answer(Post q)
+            public static explicit operator Answer(Question_Answer_DataLayer.Post q)
             {
                 Answer p = new Answer();
                 p.Id = q.Id;
@@ -187,10 +238,6 @@ namespace Question_Answer_Presentation_Layer.Models
         }
         public class Question
         {
-            Question_Answer_DataLayer.Post postDataLayerObject;
-            Answer answer;
-            Commment comment;
-
 
             #region Variables
             private int id;
@@ -241,52 +288,12 @@ namespace Question_Answer_Presentation_Layer.Models
             #region Constructor
             public Question()
             {
-                postDataLayerObject = new Question_Answer_DataLayer.Post();
-                answer = new Answer();
-                comment = new Commment();
-                
                 this.AnswersList = new List<Answer>();
-
             }
             #endregion
-            #region Methods
-            public Question GetQuestion(string connectionString, int id)
             
-            {
-                try
-                {
-
-                    Question_Answer_DataLayer.Post post = postDataLayerObject.GetPost(connectionString, id);
-                    Question question = (Question)post;
-                    //fill the question object with the answers
-                    var answers = answer.GetAnswersForAQuestion(connectionString, question.Id);
-                    foreach (var tempAnswer in answers)
-                        question.AnswersList.Add(tempAnswer);
-
-
-                    //foreach answer, we need to fill with comments
-                    foreach (var temp in question.AnswersList)
-                    {
-                        var comments = comment.GetAllCommentsForAnAnswer(connectionString, temp.Id);
-                        temp.CommentsList = new List<Commment>();
-                        foreach (var comm in comments)
-                            temp.CommentsList.Add(comm);
-                    }
-
-                    return question;
-                }
-
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-            }
-
-
-            #endregion
-
             #region Utilities
-            public static explicit operator Question(Post q)
+            public static explicit operator Question(Question_Answer_DataLayer.Post q)
             {
                 Question p = new Question();
                 p.Id = q.Id;
@@ -313,7 +320,4 @@ namespace Question_Answer_Presentation_Layer.Models
             #endregion
         }
     }
-
-    
-
 }

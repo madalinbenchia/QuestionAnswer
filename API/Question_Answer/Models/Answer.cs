@@ -41,6 +41,8 @@ namespace Question_Answer.Models
             try
             {
                 Question_Answer_DataLayer.Post answerToDataLayer = (Question_Answer_DataLayer.Post)post;
+                answerToDataLayer.CreationDate = DateTime.Now;
+                answerToDataLayer.LastActivityDate = DateTime.Now;
                 Question_Answer_DataLayer.Post resultDataLayer = postDataLayerObject.AddAnswer(connectionString, answerToDataLayer);
                 Answer result = (Answer)resultDataLayer;
                 return result;
@@ -69,6 +71,8 @@ namespace Question_Answer.Models
             try
             {
                 Question_Answer_DataLayer.Post questionToDataLayer = (Question_Answer_DataLayer.Post)post;
+                questionToDataLayer.LastActivityDate = DateTime.Now;
+                questionToDataLayer.LastEditDate = DateTime.Now;
                 Question_Answer_DataLayer.Post resultDataLayer = postDataLayerObject.UpdateAnswer(connectionString, questionToDataLayer);
                 Answer result = (Answer)resultDataLayer;
                 return result;
