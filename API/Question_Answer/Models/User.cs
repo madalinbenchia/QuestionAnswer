@@ -123,6 +123,21 @@ namespace Question_Answer.Models
                 throw new Exception(ex.Message);
             }
         }
+
+        public User UpdateUser(string connectionString, User user)
+        {
+            try
+            {
+                Question_Answer_DataLayer.User userToDataLayer = (Question_Answer_DataLayer.User)user;
+                Question_Answer_DataLayer.User resultDataLayer = userDataLayerObject.UpdateUser(connectionString, userToDataLayer);
+                User result = (User)resultDataLayer;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
 
         #region Utilities

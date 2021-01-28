@@ -112,6 +112,22 @@ namespace Question_Answer.Controllers
             }
         }
 
+        [Route("api/user/updateuser")]
+        [HttpPut]
+        public HttpResponseMessage UpdateUser([FromBody] User user)
+        {
+            try
+            {
+                User result = (User)userObject.UpdateUser(ConfigurationManager.AppSettings["connnectionString"], user);
+                return Request.CreateResponse(System.Net.HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(String.Format("Issue updating user {0}. Error Message: {1} ---- StackTrace:{2}", user.UserId, ex.Message, ex.StackTrace));
+                return Request.CreateResponse(System.Net.HttpStatusCode.ExpectationFailed, ex.Message);
+            }
+        }
+
         #region Utilities
         private string GenerateJSONWebToken(User userInfo)
         {

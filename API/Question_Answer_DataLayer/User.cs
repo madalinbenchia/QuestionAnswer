@@ -261,6 +261,47 @@ namespace Question_Answer_DataLayer
                 return result;
             }
         }
+
+        public User UpdateUser(string connectionString, User user)
+        {
+            if (string.IsNullOrEmpty(user.DisplayName) || user.DisplayName == " ")
+                throw new Exception("The DisplayName should not be null or empty.");
+
+            User result = new User();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Could not establish a connection with the database");
+                }
+
+                SqlCommand command = new SqlCommand("sp_UpdateUser", conn);
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Id", user.UserId));
+                command.Parameters.Add(new SqlParameter("@AboutMe", user.AboutMe));
+                command.Parameters.Add(new SqlParameter("@Age", user.Age));
+                command.Parameters.Add(new SqlParameter("@DisplayName", user.DisplayName));
+                command.Parameters.Add(new SqlParameter("@Location", user.Location));
+
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                            result = ConvertReaderToUserObject(reader);
+                    }
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+        }
         #endregion
 
         #region Utilities
