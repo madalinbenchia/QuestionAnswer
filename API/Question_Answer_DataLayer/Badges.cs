@@ -81,6 +81,42 @@ namespace Question_Answer_DataLayer
 
             }
         }
+
+        public List<Badges> GetAllBadgesForAnUser(string connectionString, int userId)
+        {
+            List<Badges> result = new List<Badges>();
+            using(SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Unable to establish a connection with the database");
+                }
+
+                string sqlQuery = "SELECT * FROM Badges WHERE UserId = " + userId;
+                SqlCommand command = new SqlCommand(sqlQuery, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Badges temp = new Badges(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetDateTime(3));
+                            result.Add(temp);
+                        }
+                    }
+                    return result;
+
+                }catch(Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+        }
         #endregion
     }
 }

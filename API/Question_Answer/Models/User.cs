@@ -177,7 +177,7 @@ namespace Question_Answer.Models
         {
             try
             {
-                userDataLayerObject.UpdateUserReputation(connectionString, upVotes, downVotes, totalPostsScore, userId);
+                return userDataLayerObject.UpdateUserReputation(connectionString, upVotes, downVotes, totalPostsScore, userId);
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
