@@ -6,17 +6,18 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using Question_Answer.Models;
+using Question_Answer.Services;
 
 namespace Question_Answer.Controllers
 {
     public class VoteController : ApiController
     {
-        private Vote voteObject;
+        private VoteService voteObject;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public VoteController()
         {
-            voteObject = new Vote();
+            voteObject = new VoteService();
         }
 
         /// <summary>

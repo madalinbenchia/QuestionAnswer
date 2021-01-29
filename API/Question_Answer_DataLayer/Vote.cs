@@ -19,6 +19,14 @@ namespace Question_Answer_DataLayer
         public int VoteTypeId { get => voteTypeId; set => voteTypeId = value; }
         #endregion
 
+        public Vote(int postId, int userId, int voteTypeId)
+        {
+            this.PostId = postId;
+            this.UserId = userId;
+            this.VoteTypeId = voteTypeId;
+        }
+        public Vote() { }
+
         #region Methods
         public string AddVote(string connectionString, Vote vote)
         {
@@ -30,7 +38,7 @@ namespace Question_Answer_DataLayer
                 }
                 catch
                 {
-                    throw new Exception("Unable to establish a connection with the database");
+                    return "Unable to establish a connection with the database";
                 }
                 
                 SqlCommand command = new SqlCommand("sp_AddVote", conn);
@@ -44,11 +52,82 @@ namespace Question_Answer_DataLayer
                     return "Success";
                 }catch(Exception ex)
                 {
-                    throw new Exception(ex.Message);
+                    return ex.Message;
                 }
                 
             }
         }
+
+        public int GetUpVotesForAPost(string connectionString, int postId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+                int result = -1;
+                string sqlStatement = "SELECT COUNT(*) FROM Votes Where VoteTypeId = 2 AND Id=" + postId;
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                try
+                {
+                    using(SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while(reader.Read())
+                        {
+                            result = reader.GetInt32(0);
+                        }
+                    }
+                    return result;
+                }
+                catch
+                {
+                    throw new Exception("Can not get the upVotes for postId = " + postId);
+                }
+
+            }
+        }
+
+        public int GetDownVotesForAPost(string connectionString, int postId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+                int result = -1;
+                string sqlStatement = "SELECT COUNT(*) FROM Votes Where VoteTypeId = 3 AND Id=" + postId;
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result = reader.GetInt32(0);
+                        }
+                    }
+                    return result;
+                }
+                catch
+                {
+                    throw new Exception("Can not get the downVotes for postId = " + postId);
+                }
+
+            }
+        }
+
         #endregion
 
     }

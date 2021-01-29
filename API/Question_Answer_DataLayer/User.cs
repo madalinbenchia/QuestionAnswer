@@ -302,6 +302,127 @@ namespace Question_Answer_DataLayer
                 }
             }
         }
+
+
+        public void UpdateUserUpVote(string connectionString, int userId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+
+                string sqlStatement = "UPDATE Users SET UpVotes = ISNULL(UpVotes, 0) + 1 WHERE Id = " + userId;
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                try
+                {
+                    command.ExecuteNonQuery();
+                }catch
+                {
+                    throw new Exception("Can not update the user Upvotes field.");
+                }
+
+            }
+        }
+
+        public void UpdateUserDownVote(string connectionString, int userId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+
+                string sqlStatement = "UPDATE Users SET DownVotes = ISNULL(DownVotes, 0) + 1 WHERE Id = " + userId;
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch
+                {
+                    throw new Exception("Can not update the user DownVotes field.");
+                }
+
+            }
+        }
+
+        public int GetPostsTotalScoreForAUser(string connectionString, int userId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+                int result = -1;
+                string sqlStatement = "SELECT SUM(Score) FROM Posts Where OwnerUserId" + userId;
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                try
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            result = reader.GetInt32(0);
+                        }
+                    }
+                    return result;
+                }
+                catch
+                {
+                    throw new Exception("Can not get the posts total score for userId" + userId);
+                }
+
+            }
+        }
+
+        public int UpdateUserReputation(string connectionString, int upVotes, int downVotes, int totalPostsScore, int userId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+                int totalScore = upVotes * 10 - downVotes * 10 + totalPostsScore;
+
+                string sqlStatement = "UPDATE Users SET Reputation = " + totalScore + " WHERE Id = " + userId;
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                try
+                {
+                    command.ExecuteNonQuery();
+                    return totalScore;
+                }
+                catch
+                {
+                    throw new Exception("Can not update the user DownVotes field.");
+                }
+            }
+            
+        }
         #endregion
 
         #region Utilities

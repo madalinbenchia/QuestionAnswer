@@ -7,6 +7,7 @@ namespace Question_Answer.Models
 {
     public class Vote
     {
+        public Question_Answer_DataLayer.Vote voteDataLayerObject;
         #region Variables
         private int postId;
         private int userId;
@@ -19,38 +20,27 @@ namespace Question_Answer.Models
         public int VoteTypeId { get => voteTypeId; set => voteTypeId = value; }
         #endregion
 
-        #region Methods
-        public string AddVote(string connectionString, Vote vote)
+        public int GetAlllUpVotesForAnUser(string connectionString, int postId)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                try
-                {
-                    conn.Open();
-                }
-                catch
-                {
-                    throw new Exception("Unable to establish a connection with the database");
-                }
-
-                SqlCommand command = new SqlCommand("sp_AddVote", conn);
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@PostId", vote.PostId));
-                command.Parameters.Add(new SqlParameter("@UserId", vote.UserId));
-                command.Parameters.Add(new SqlParameter("@VoteType", vote.VoteTypeId));
-                try
-                {
-                    command.ExecuteNonQuery();
-                    return "Success";
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-
+                return voteDataLayerObject.GetUpVotesForAPost(connectionString, postId);
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
-        #endregion
+
+        public int GetAllDownVotesForAnUser(string connectionString, int postId)
+        {
+            try
+            {
+                return voteDataLayerObject.GetDownVotesForAPost(connectionString, postId);
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
     }
 }

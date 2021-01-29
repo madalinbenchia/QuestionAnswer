@@ -28,7 +28,7 @@ namespace Question_Answer.Models
         private string location;
         private string token;
         private int role;
-        
+
         #endregion
 
         #region Properties
@@ -55,7 +55,7 @@ namespace Question_Answer.Models
         #region Contructor
         public User()
         {
-           userDataLayerObject = new Question_Answer_DataLayer.User();
+            userDataLayerObject = new Question_Answer_DataLayer.User();
         }
         #endregion
 
@@ -67,11 +67,11 @@ namespace Question_Answer.Models
                 Question_Answer_DataLayer.User user = userDataLayerObject.Login(connnectionString, username, password);
                 return (User)user;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            
+
         }
 
         public User Register(string connnectionString, User user)
@@ -81,11 +81,11 @@ namespace Question_Answer.Models
                 Question_Answer_DataLayer.User userInfo = (Question_Answer_DataLayer.User)user;
                 Question_Answer_DataLayer.User userResult = userDataLayerObject.Register(connnectionString, userInfo);
                 return (User)userResult;
-            }catch(Exception ex)
+            } catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            
+
         }
 
         public List<User> GetUsers(string connectionString, int maxNumber = 0)
@@ -138,6 +138,52 @@ namespace Question_Answer.Models
                 throw new Exception(ex.Message);
             }
         }
+
+        public void UpdateUserUpVotes(string connectionString, int userId)
+        {
+            try
+            {
+                userDataLayerObject.UpdateUserUpVote(connectionString, userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public void UpdateUserDownVotes(string connectionString, int userId)
+        {
+            try
+            {
+                userDataLayerObject.UpdateUserDownVote(connectionString, userId);
+            } catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public int GetPostsTotalScoreForAUser(string connectionString, int userId)
+        {
+            try
+            {
+                return userDataLayerObject.GetPostsTotalScoreForAUser(connectionString, userId);
+            } catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public int UpdateUserReputation(string connectionString, int upVotes, int downVotes, int totalPostsScore, int userId)
+        {
+            try
+            {
+                userDataLayerObject.UpdateUserReputation(connectionString, upVotes, downVotes, totalPostsScore, userId);
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         #endregion
 
         #region Utilities

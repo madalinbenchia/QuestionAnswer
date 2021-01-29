@@ -104,6 +104,29 @@ namespace Question_Answer.Models
                 throw new Exception(ex.Message);
             }
         }
+
+        public void UpdateFavoriteCount(string connectionString, int postId)
+        {
+            try
+            {
+                postDataLayerObject.UpdateFavoriteCount(connectionString, postId);
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public void UpdateScorePost(string connectionString, int postId, int upVotes, int downnVotes)
+        {
+            try
+            {
+                int score = upVotes - downnVotes;
+                postDataLayerObject.UpdateScorePost(connectionString, postId, score);
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
 
         #region Utilities

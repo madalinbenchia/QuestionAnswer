@@ -505,9 +505,65 @@ namespace Question_Answer_DataLayer
                 return PostsList;
             }
         }
-                #endregion
 
-                #region Utilities
+        public void UpdateFavoriteCount(string connectionString, int postId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+
+                string sqlStatement = "UPDATE Posts SET FavoriteCount = ISNULL(FavoriteCount, 0) + 1 WHERE Id = " + postId;
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch
+                {
+                    throw new Exception("Can not update the post favorteCount field.");
+                }
+
+            }
+        }
+
+        public void UpdateScorePost(string connectionString, int postId, int score)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                }
+                catch
+                {
+                    throw new Exception("Can not establish a connection with the database.");
+                }
+
+                string sqlStatement = "UPDATE Posts SET Score = " + score + " WHERE Id = " + postId;
+                SqlCommand command = new SqlCommand(sqlStatement, conn);
+                command.CommandType = System.Data.CommandType.Text;
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch
+                {
+                    throw new Exception("Can not update the post favorteCount field.");
+                }
+
+            }
+        }
+        #endregion
+
+        #region Utilities
                 public Post ConnvertReaderToPostObject(SqlDataReader reader)
         {
             Post temp = new Post();
