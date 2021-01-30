@@ -71,7 +71,7 @@ namespace Question_Answer_DataLayer
                     throw new Exception("Can not establish a connection with the database.");
                 }
                 int result = -1;
-                string sqlStatement = "SELECT COUNT(*) FROM Votes Where VoteTypeId = 2 AND Id=" + postId;
+                string sqlStatement = "SELECT COUNT(*) FROM Votes Where VoteTypeId = 2 AND PostId=" + postId;
                 SqlCommand command = new SqlCommand(sqlStatement, conn);
                 command.CommandType = System.Data.CommandType.Text;
                 try
@@ -106,7 +106,7 @@ namespace Question_Answer_DataLayer
                     throw new Exception("Can not establish a connection with the database.");
                 }
                 int result = -1;
-                string sqlStatement = "SELECT COUNT(*) FROM Votes Where VoteTypeId = 3 AND Id=" + postId;
+                string sqlStatement = "SELECT COUNT(*) FROM Votes Where VoteTypeId = 3 AND PostId=" + postId;
                 SqlCommand command = new SqlCommand(sqlStatement, conn);
                 command.CommandType = System.Data.CommandType.Text;
                 try

@@ -20,6 +20,12 @@ namespace Question_Answer.Models
         public int VoteTypeId { get => voteTypeId; set => voteTypeId = value; }
         #endregion
 
+        public Vote()
+        {
+            voteDataLayerObject = new Question_Answer_DataLayer.Vote();
+        }
+
+
         public int GetAlllUpVotesForAnUser(string connectionString, int postId)
         {
             try

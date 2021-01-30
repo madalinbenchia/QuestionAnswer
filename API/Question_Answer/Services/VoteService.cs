@@ -25,6 +25,7 @@ namespace Question_Answer.Services
             question = new Question();
             answer = new Answer();
             voteMapper = new VoteMapper();
+            badge = new Badge();
         }
 
         public string AddVote(string connectionString, Vote vote)

@@ -589,6 +589,8 @@ namespace Question_Answer_DataLayer
                 temp.LastEditDate = reader.GetDateTime(reader.GetOrdinal("LastEditDate"));
             if (!reader.IsDBNull(reader.GetOrdinal("LastEditorUserId")))
                 temp.LastEditorUserId = reader.GetInt32(reader.GetOrdinal("LastEditorUserId"));
+            if (!reader.IsDBNull(reader.GetOrdinal("LastEditorDisplayName")))
+                temp.LastEditorDisplayName = reader.GetString(reader.GetOrdinal("LastEditorDisplayName"));
             if (!reader.IsDBNull(reader.GetOrdinal("OwnerUserId")))
                 temp.OwnerUserId = reader.GetInt32(reader.GetOrdinal("OwnerUserId"));
             if (!reader.IsDBNull(reader.GetOrdinal("PostTypeId")))

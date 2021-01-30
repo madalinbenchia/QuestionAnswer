@@ -372,7 +372,7 @@ namespace Question_Answer_DataLayer
                     throw new Exception("Can not establish a connection with the database.");
                 }
                 int result = -1;
-                string sqlStatement = "SELECT SUM(Score) FROM Posts Where OwnerUserId" + userId;
+                string sqlStatement = "SELECT SUM(Score) FROM Posts Where OwnerUserId=" + userId;
                 SqlCommand command = new SqlCommand(sqlStatement, conn);
                 command.CommandType = System.Data.CommandType.Text;
                 try
