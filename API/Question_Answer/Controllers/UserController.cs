@@ -35,10 +35,10 @@ namespace Question_Answer.Controllers
             byte[] data = Convert.FromBase64String(user.Password);
             string decodedPassword = Encoding.UTF8.GetString(data);
             //we don't want to send back as response the password
-            user.Password = string.Empty;
+            
             try
             {
-                User userResult = userObject.Login(ConfigurationManager.AppSettings["connnectionString"], user.Username, decodedPassword);
+                User userResult = userObject.Login(ConfigurationManager.AppSettings["connnectionString"], user.Username, user.Password);
                 userResult.Token = GenerateJSONWebToken(userResult);
                 return Request.CreateResponse(System.Net.HttpStatusCode.OK, userResult);
             }
@@ -57,6 +57,7 @@ namespace Question_Answer.Controllers
             //need tp decode before to send it to Model
             byte[] data = Convert.FromBase64String(user.Password);
             string decodedPassword = Encoding.UTF8.GetString(data);
+            
             try
             {
                 User userResult = userObject.Register(ConfigurationManager.AppSettings["connnectionString"], user);

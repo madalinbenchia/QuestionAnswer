@@ -16,3 +16,24 @@
    at Question_Answer.Controllers.PostController.UpdateQuestion(Question question) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\PostController.cs:line 81
 2021-01-10 14:59:22,098 [9] ERROR Question_Answer.Controllers.PostController - Issue updating the question 4565700. Error Message: SqlDateTime overflow. Must be between 1/1/1753 12:00:00 AM and 12/31/9999 11:59:59 PM. ---- StackTrace:   at Question_Answer.Models.Question.UpdatePost(String connectionString, Post post) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Models\Question.cs:line 79
    at Question_Answer.Controllers.PostController.UpdateQuestion(Question question) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\PostController.cs:line 81
+2021-02-01 23:11:27,535 [6] ERROR Question_Answer.Controllers.UserController - Issue during register -- Error Message: Error number 5100 in the THROW statement is outside the valid range. Specify an error number in the valid range of 50000 to 2147483647. -- StackTrace:    at Question_Answer.Models.User.Register(String connnectionString, User user) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Models\User.cs:line 86
+   at Question_Answer.Controllers.UserController.Register(User user) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\UserController.cs:line 62
+2021-02-01 23:12:49,696 [6] ERROR Question_Answer.Controllers.UserController - Issue during register -- Error Message: Username is not unique. -- StackTrace:    at Question_Answer.Models.User.Register(String connnectionString, User user) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Models\User.cs:line 86
+   at Question_Answer.Controllers.UserController.Register(User user) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\UserController.cs:line 62
+2021-02-01 23:16:14,439 [6] ERROR Question_Answer.Controllers.UserController - Issue during register -- Error Message: Username is not unique. -- StackTrace:    at Question_Answer.Models.User.Register(String connnectionString, User user) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Models\User.cs:line 86
+   at Question_Answer.Controllers.UserController.Register(User user) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\UserController.cs:line 62
+2021-02-01 23:28:16,934 [8] ERROR Question_Answer.Controllers.UserController - Issue during login -- Error Message: Value cannot be null.
+Parameter name: value -- StackTrace:    at System.Security.Claims.Claim..ctor(String type, String value, String valueType, String issuer, String originalIssuer, ClaimsIdentity subject, String propertyKey, String propertyValue)
+   at System.Security.Claims.Claim..ctor(String type, String value)
+   at Question_Answer.Controllers.UserController.GenerateJSONWebToken(User userInfo) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\UserController.cs:line 138
+   at Question_Answer.Controllers.UserController.Login(User user) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\UserController.cs:line 42
+2021-02-01 23:31:33,130 [14] ERROR Question_Answer.Controllers.UserController - Issue during login -- Error Message: Value cannot be null.
+Parameter name: value -- StackTrace:    at System.Security.Claims.Claim..ctor(String type, String value, String valueType, String issuer, String originalIssuer, ClaimsIdentity subject, String propertyKey, String propertyValue)
+   at System.Security.Claims.Claim..ctor(String type, String value)
+   at Question_Answer.Controllers.UserController.GenerateJSONWebToken(User userInfo) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\UserController.cs:line 138
+   at Question_Answer.Controllers.UserController.Login(User user) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\UserController.cs:line 42
+2021-02-01 23:37:38,402 [6] ERROR Question_Answer.Controllers.UserController - Issue during login -- Error Message: Value cannot be null.
+Parameter name: value -- StackTrace:    at System.Security.Claims.Claim..ctor(String type, String value, String valueType, String issuer, String originalIssuer, ClaimsIdentity subject, String propertyKey, String propertyValue)
+   at System.Security.Claims.Claim..ctor(String type, String value)
+   at Question_Answer.Controllers.UserController.GenerateJSONWebToken(User userInfo) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\UserController.cs:line 138
+   at Question_Answer.Controllers.UserController.Login(User user) in C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\Controllers\UserController.cs:line 42

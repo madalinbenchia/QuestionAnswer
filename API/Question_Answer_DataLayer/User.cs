@@ -247,7 +247,7 @@ namespace Question_Answer_DataLayer
                     throw new Exception("Can not establish a connection with the database.");
                 }
 
-                string sqlStatement = "SELECT * FROM Users WHERE Id = " + id;
+                string sqlStatement = "Select * from Users u JOIN Accounts a on u.AccountId = a.AccountId WHERE Id = " + id;
                 SqlCommand command = new SqlCommand(sqlStatement, conn);
                 command.CommandType = System.Data.CommandType.Text;
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -462,7 +462,8 @@ namespace Question_Answer_DataLayer
 
             if (!reader.IsDBNull(reader.GetOrdinal("Views")))
                 temp.ViewsNumber = reader.GetInt32(reader.GetOrdinal("Views"));
-
+            if (!reader.IsDBNull(reader.GetOrdinal("Username")))
+                temp.Username = reader.GetString(reader.GetOrdinal("Username"));
             return temp;
         }
         #endregion
