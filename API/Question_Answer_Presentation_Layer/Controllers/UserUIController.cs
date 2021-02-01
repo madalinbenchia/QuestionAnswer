@@ -9,14 +9,14 @@ using System.Web.Http;
 
 namespace Question_Answer_Presentation_Layer.Controllers
 {
-    public class UserController : ApiController
+    public class UserUIController : ApiController
     {
-        private User userObject;
+        private UserUI userObject;
 
         #region Constructor
-        public UserController()
+        public UserUIController()
         {
-            userObject = new User();
+            userObject = new UserUI();
         }
         #endregion
 

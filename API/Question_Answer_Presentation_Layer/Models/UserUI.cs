@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Question_Answer_Presentation_Layer.Models
 {
-    public class User
+    public class UserUI
     {
         #region Variables
         private Question_Answer_DataLayer.User userDataLayerObject;
@@ -56,13 +56,13 @@ namespace Question_Answer_Presentation_Layer.Models
 
         #region Constructor
 
-        public User()
+        public UserUI()
         {
             userMapper = new UserMapper();
             userDataLayerObject = new Question_Answer_DataLayer.User();
             badgesDataLayerObject = new Badges();
         }
-        public User(int userId, string aboutMe, int age, DateTime creationDate, DateTime lastAccessDate, string displayName, int upVotes, int downVotes, string email, int reputation, int viewsNumber, string userName, string location, string password, int role)
+        public UserUI(int userId, string aboutMe, int age, DateTime creationDate, DateTime lastAccessDate, string displayName, int upVotes, int downVotes, string email, int reputation, int viewsNumber, string userName, string location, string password, int role)
         {
             this.UserId = userId;
             this.AboutMe = aboutMe;
@@ -83,15 +83,15 @@ namespace Question_Answer_Presentation_Layer.Models
         #endregion
 
         #region Methods
-        public List<User> GetAllUsersWithBadges(string connectionString, int maxNumber = 0)
+        public List<UserUI> GetAllUsersWithBadges(string connectionString, int maxNumber = 0)
         {
-            List<User> resullt = new List<User>();
+            List<UserUI> resullt = new List<UserUI>();
             try
             {
                 List<Question_Answer_DataLayer.User> users = userDataLayerObject.GetUsers(connectionString, maxNumber);
                 foreach (var user in users)
                 {
-                    User tempUser = userMapper.UserDataLayerToUser(user);
+                    UserUI tempUser = userMapper.UserDataLayerToUser(user);
                     tempUser.Badges = badgesDataLayerObject.GetAllBadgesForAnUser(connectionString, user.UserId);
                     resullt.Add(tempUser);
                 }
@@ -99,16 +99,16 @@ namespace Question_Answer_Presentation_Layer.Models
                 return resullt;
             }catch
             {
-                return new List<User>();
+                return new List<UserUI>();
             }
             
         }
 
-        public User GetUserWithBadges(string connectionString, int userId)
+        public UserUI GetUserWithBadges(string connectionString, int userId)
         {
             try
             {
-                User result = new User();
+                UserUI result = new UserUI();
                 Question_Answer_DataLayer.User userDataLayer = userDataLayerObject.GetUser(connectionString, userId);
                 result = userMapper.UserDataLayerToUser(userDataLayer);
                 result.badges = badgesDataLayerObject.GetAllBadgesForAnUser(connectionString, userId);
