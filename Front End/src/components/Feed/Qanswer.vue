@@ -134,7 +134,6 @@
           answerOwner.DisplayName
         }}</b>
       </p>
-      {{ localComments }}
       <div
         v-for="(comment, index) in localAnswer.CommentsList"
         :key="comment.Id"

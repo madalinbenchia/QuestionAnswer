@@ -94,14 +94,14 @@ let authPages = {
     {
       path: "/login",
       name: "Login",
-      component: Login,
-      meta: { middleware: guest }
+      component: Login
+      // meta: { middleware: guest }
     },
     {
       path: "/register",
       name: "Register",
-      component: Register,
-      meta: { middleware: guest }
+      component: Register
+      // meta: { middleware: guest }
     }
   ]
 };
