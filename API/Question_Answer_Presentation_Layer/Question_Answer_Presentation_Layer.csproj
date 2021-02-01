@@ -155,9 +155,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Question_Answer_DataLayer\Question_Answer_DataLayer.csproj">
-      <Project>{10897842-4256-4486-ae3f-2fd0a2bfbd00}</Project>
-      <Name>Question_Answer_DataLayer</Name>
+    <ProjectReference Include="..\Question_Answer\Question_Answer.csproj">
+      <Project>{efbe5e7e-05b2-43ed-8a69-779fe3d1c658}</Project>
+      <Name>Question_Answer</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

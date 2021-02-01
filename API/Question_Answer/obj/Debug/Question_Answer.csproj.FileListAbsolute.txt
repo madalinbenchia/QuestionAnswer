@@ -189,6 +189,3 @@ C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\obj\Debug\Que
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\obj\Debug\Question_Answer.csproj.CopyComplete
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\obj\Debug\Question_Answer.dll
 C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\obj\Debug\Question_Answer.pdb
-C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Question_Answer_Presentation_Layer.dll
-C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Question_Answer_Presentation_Layer.pdb
-C:\Users\madal\OneDrive\Desktop\QuestionAnswer\API\Question_Answer\bin\Question_Answer_Presentation_Layer.dll.config
