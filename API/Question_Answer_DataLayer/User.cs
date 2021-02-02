@@ -70,8 +70,8 @@ namespace Question_Answer_DataLayer
                     while (reader.Read())
                     {
                                                 //read the info comes from db and put them in User object
-                        if (!reader.IsDBNull(reader.GetOrdinal("UserName")))
-                            tempObj.Username = reader.GetString(reader.GetOrdinal("UserName"));
+                        if (!reader.IsDBNull(reader.GetOrdinal("Username")))
+                            tempObj.Username = reader.GetString(reader.GetOrdinal("Username"));
                         
                         if (!reader.IsDBNull(reader.GetOrdinal("UserId")))
                             tempObj.UserId = reader.GetInt32(reader.GetOrdinal("UserId"));
@@ -209,10 +209,16 @@ namespace Question_Answer_DataLayer
                 switch (maxNumber)
                 {
                     case 0:
-                        sqlStatement = "SELECT * FROM Users ORDER BY reputation DESC";
+                        sqlStatement = "SELECT u.Id, u.AboutMe, u.Age, u.CreationDate," +
+                            "u.DisplayName, u.DownVotes, u.LastAccessDate, u.Location, " +
+                            "u.Reputation, u.UpVotes, u.Views, a.Username FROM Users u " +
+                            "LEFT JOIN Accounts a on u.AccountId = a.AccountId ORDER BY reputation DESC";
                         break;
                     default:
-                        sqlStatement = "SELECT TOP(" + maxNumber + ") * FROM Users ORDER BY reputation DESC";
+                        sqlStatement = "SELECT TOP(" + maxNumber + ") u.Id, u.AboutMe, u.Age, u.CreationDate," +
+                            "u.DisplayName, u.DownVotes, u.LastAccessDate, u.Location, " +
+                            "u.Reputation, u.UpVotes, u.Views, a.Username FROM Users u " +
+                            "LEFT JOIN Accounts a on u.AccountId = a.AccountId ORDER BY reputation DESC";
                         break;
                 }
 
@@ -462,6 +468,7 @@ namespace Question_Answer_DataLayer
 
             if (!reader.IsDBNull(reader.GetOrdinal("Views")))
                 temp.ViewsNumber = reader.GetInt32(reader.GetOrdinal("Views"));
+
             if (!reader.IsDBNull(reader.GetOrdinal("Username")))
                 temp.Username = reader.GetString(reader.GetOrdinal("Username"));
             return temp;

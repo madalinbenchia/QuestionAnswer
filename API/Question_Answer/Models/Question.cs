@@ -36,7 +36,21 @@ namespace Question_Answer.Models
                 throw new Exception(ex.Message);
             }
         }
+        public Post GetPost(string connectionString, int id)
+        {
+            try
+            {
 
+                Question_Answer_DataLayer.Post post = postDataLayerObject.GetPost(connectionString, id);
+                Question currentPost = (Question)post;
+                return currentPost;
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         public override Post AddPost(string connectionString, Post post)
         {
             try
