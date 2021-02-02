@@ -411,7 +411,7 @@ namespace Question_Answer_DataLayer
                 command.Parameters.Add(new SqlParameter("@LastEditorUserId", answer.LastEditorUserId));
                 command.Parameters.Add(new SqlParameter("@Tags", answer.Tags));
                 command.Parameters.Add(new SqlParameter("@Title", answer.Title));
-                command.Parameters.Add(new SqlParameter("@ViewCount", answer.Title));
+                command.Parameters.Add(new SqlParameter("@ViewCount", answer.ViewCount));
                 command.Parameters.Add(new SqlParameter("@LastActivityDate", answer.LastActivityDate));
                 command.Parameters.Add(new SqlParameter("@LastEditDate", answer.LastEditDate));
                 using (SqlDataReader reader = command.ExecuteReader())
