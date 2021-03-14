@@ -115,13 +115,14 @@ public class QuestionService {
     }
 
     public Question GetQuestionWithAnswers(int id) {
+    	Question question = new Question();
         try {
-            Question question = questionRepository.GetQuestion(id);
+            question = questionRepository.GetQuestion(id);
             question.setAnswers(answerService.GetAnswersWithComments(id));
             return question;
         }catch(Exception ex) {
             LOGGER.error(ex.getMessage());
-            return null;
+            return question;
         }
     }
 
