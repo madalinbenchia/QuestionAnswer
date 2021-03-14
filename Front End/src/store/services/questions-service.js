@@ -7,13 +7,15 @@ function list() {
   const options = {
     headers: {}
   };
-  const max = "10";
-  return axios.get(`${url}/posts?maxNumber=${max}`, options).then(response => {
-    return {
-      list: response.data,
-      meta: response.data.meta
-    };
-  });
+  const max = "1";
+  return axios
+    .get(`${url}/question/all?maxNumber=${max}`, options)
+    .then(response => {
+      return {
+        list: response.data,
+        meta: response.data.meta
+      };
+    });
 }
 
 function search(id) {
@@ -81,11 +83,9 @@ function add(question) {
 
   const options = {};
 
-  return axios
-    .post(`${url}/post/addquestion`, question, options)
-    .then(response => {
-      return response.data;
-    });
+  return axios.post(`${url}/question/add`, question, options).then(response => {
+    return response.data;
+  });
 }
 
 function update(question) {

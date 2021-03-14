@@ -112,10 +112,10 @@ public class AnswerService {
         try {
 
             List<Answer> result = answerRepository.GetAnswers(questionId);
-            if(!result.equals(null))
-                return result;
-            else
-                throw new EmptyQuestionListException();
+            //if(!result.equals(null))
+            return result;
+            //else
+                //throw new EmptyQuestionListException();
         }
         catch(Exception ex) {
             LOGGER.error(ex.getMessage());
@@ -128,15 +128,15 @@ public class AnswerService {
         try {
 
             List<Answer> result = answerRepository.GetAnswers(questionId);
-            if(!result.equals(null)) {
+            //if(!result.equals(null)) {
                 for (Answer answer : result) {
                     answer.setComments(commentService.GetAllCommentsForAnAswer(answer.getId()));
                 }
                 return result;
-            }
+            //}
 
-            else
-                throw new EmptyQuestionListException();
+            //else
+                //throw new EmptyQuestionListException();
         }
         catch(Exception ex) {
             LOGGER.error(ex.getMessage());

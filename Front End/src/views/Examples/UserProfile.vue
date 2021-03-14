@@ -9,33 +9,33 @@
           <div class="col-lg-7 col-md-10">
             <div style="white-space:nowrap;">
               <h1 class="display-2 text-white">
-                Hello {{ this.user.DisplayName }}
+                Hello {{ this.user.displayName }}
                 <img
-                  v-if="this.badge == 'Bronze'"
+                  v-if="this.user.reputation < 100"
                   src="/img/bronze.png"
                   alt=""
                   style="height: 200px; width: 180px"
                 />
                 <img
-                  v-if="this.badge == 'Silver'"
+                  v-else-if="this.user.reputation < 500"
                   src="/img/silver.png"
                   alt=""
                   style="height: 200px; width: 180px"
                 />
                 <img
-                  v-if="this.badge == 'Gold'"
+                  v-else-if="this.user.reputation < 1500"
                   src="/img/gold.png"
                   alt=""
                   style="height: 200px; width: 180px"
                 />
                 <img
-                  v-if="this.badge == 'Diamond'"
+                  v-else-if="this.user.reputation < 5000"
                   src="/img/diamond.png"
                   alt=""
                   style="height: 200px; width: 180px"
                 />
                 <img
-                  v-if="this.badge == 'Platinum'"
+                  v-else-if="this.user.reputation < 10000"
                   src="/img/platinum.png"
                   alt=""
                   style="height: 200px; width: 180px"
@@ -120,7 +120,7 @@
                   Reputaton
                 </h5>
                 <span class="h2 font-weight-bold mb-0 text-white">{{
-                  user.Reputation
+                  user.reputation
                 }}</span>
               </div>
               <div class="col-auto">
@@ -169,11 +169,11 @@ export default {
   data() {
     return {
       user: {
-        AboutMe: null,
-        Age: null,
-        DisplayName: null,
+        aboutMe: null,
+        age: null,
+        displayName: null,
         Email: null,
-        Username: null
+        username: null
       },
       badge: "",
       userDetails: ""
@@ -181,18 +181,18 @@ export default {
   },
   computed: {
     UpVotePercent() {
-      if (this.user.UpVotes == 0) return 0;
+      if (this.user.upVotes == 0) return 0;
       else
         return Math.round(
-          (this.user.UpVotes * 100) / (this.user.DownVotes + this.user.UpVotes)
+          (this.user.upVotes * 100) / (this.user.downVotes + this.user.upVotes)
         );
     },
     DownVotePercent() {
-      if (this.user.DownVotes == 0) return 0;
+      if (this.user.downVotes == 0) return 0;
       else
         return Math.round(
-          (this.user.DownVotes * 100) /
-            (this.user.DownVotes + this.user.UpVotes)
+          (this.user.downVotes * 100) /
+            (this.user.downVotes + this.user.upVotes)
         );
     }
   },
@@ -203,13 +203,13 @@ export default {
   methods: {
     async getProfile() {
       this.user = await { ...store.getters.currentUser };
-      await this.$store.dispatch("users/getdetails", this.user.UserId);
-      this.userDetails = this.$store.getters["users/user"];
-      if (this.userDetails.Badges.length > 0) {
-        this.badge = this.userDetails.Badges[
-          this.userDetails.Badges.length - 1
-        ].Name;
-      }
+      console.log(this.user);
+
+      // if (this.userDetails.Badges.length > 0) {
+      //   this.badge = this.userDetails.Badges[
+      //     this.userDetails.Badges.length - 1
+      //   ].Name;
+      // }
     }
   }
 };

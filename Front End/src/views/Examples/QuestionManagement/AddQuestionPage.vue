@@ -52,7 +52,7 @@
               </p>
               <!-- <html-editor v-model="question.body" name="editor" /> -->
               <vue-editor
-                v-model="question.Body"
+                v-model="question.body"
                 :editorToolbar="customToolbar"
               ></vue-editor>
 
@@ -132,8 +132,8 @@ export default {
       try {
         this.question.tags = this.question.tags2.toString().replaceAll(",", "");
         this.user = await { ...this.$store.getters.currentUser };
-        this.question.owneruserid = this.user.UserId;
-
+        this.question.userId = this.user.userId;
+        console.log(this.user);
         await this.$store.dispatch("questions/add", this.question);
         this.question = await this.$store.getters["questions/question"];
         console.log(this.question);
@@ -143,7 +143,7 @@ export default {
         });
         this.$router.push({
           name: "View Question",
-          params: { id: this.question.Id }
+          params: { id: this.question.id }
         });
       } catch (error) {
         this.$notify({

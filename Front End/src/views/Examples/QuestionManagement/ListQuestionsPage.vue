@@ -22,18 +22,18 @@
                 body-classes="px-4 pb-2"
                 footer-classes="pb-2"
               >
-                <h3 slot="header" class="h3 mb-0">{{ question.Title }}</h3>
-                 <p v-if ="question.Body.length > 300" class="card-text mb-4" v-html="question.Body.substring(0,300) + ' ...' "></p>
-                 <p v-else class="card-text mb-4" v-html="question.Body"></p>
+                <h3 slot="header" class="h3 mb-0">{{ question.title }}</h3>
+                 <p v-if ="question.body.length > 300" class="card-text mb-4" v-html="question.Body.substring(0,300) + ' ...' "></p>
+                 <p v-else class="card-text mb-4" v-html="question.body"></p>
                 <span
-                  v-for="tag in question.Tags.split('<')"
+                  v-for="tag in question.tags.split('<')"
                   :key="tag.id"
                   class="badge badge-default mr-1"
                   >{{ tag.slice(0, -1) }}</span
                 >
                 <a
                   type="text"
-                  @click="viewQuestion(question.Id)"
+                  @click="viewQuestion(question.id)"
                   class="table-action"
                   data-toggle="tooltip"
                   style="cursor: pointer; float:right"
@@ -128,7 +128,7 @@ export default {
 
   created() {
     this.getQuestionsList();
-    this.getUsersList();
+    // this.getUsersList();
   },
   methods: {
     
@@ -136,8 +136,9 @@ export default {
       try {
         await this.$store.dispatch("questions/list");
         this.questions = await { ...this.$store.getters["questions/list"] };
+        console.log(this.questions)
         this.qloading = false;
-    
+        console.log(this.qloading)
       } catch (error) {
         console.log(error);
         this.$notify({

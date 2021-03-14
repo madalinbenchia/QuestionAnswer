@@ -9,13 +9,13 @@
           label="Display name "
           prepend-icon="fas fa-user"
           placeholder="Your display name"
-          v-model="user.DisplayName"
+          v-model="user.displayName"
         />
         <base-input
           label="Location"
           prepend-icon="fas fa-map-marker-alt"
           placeholder="Location"
-          v-model="user.Location"
+          v-model="user.location"
         />
 
         <label class="form-control-label">About me</label>
@@ -71,7 +71,7 @@ export default {
 
   async created() {
     setTimeout(() => {
-      this.editorValue = this.user.AboutMe;
+      this.editorValue = this.user.aboutMe;
     }, 100);
   },
 

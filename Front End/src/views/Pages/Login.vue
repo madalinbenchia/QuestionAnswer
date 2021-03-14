@@ -95,8 +95,8 @@
 <script>
 export default {
   data: () => ({
-    username: "mada",
-    password: "mada"
+    username: "madauser",
+    password: "secret123"
   }),
   computed: {
     isAuthenticated: function() {
@@ -107,7 +107,7 @@ export default {
     async handleSubmit() {
       const user = {
         username: this.username,
-        password: btoa(this.password)
+        password: this.password
       };
       const requestOptions = {
         headers: {
