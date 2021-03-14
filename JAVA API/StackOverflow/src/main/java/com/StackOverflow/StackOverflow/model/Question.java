@@ -22,7 +22,8 @@ public class Question extends Post {
     public Question(int id, String body, String tags, String title, int userId) {
         super(id,body,tags,title, userId);
     }
-
+    
+    public Question() {}
     public List<Answer> getAnswers() {
         return Answers;
     }

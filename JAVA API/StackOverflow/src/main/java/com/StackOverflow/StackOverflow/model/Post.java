@@ -21,6 +21,7 @@ public class Post {
     private String Title;
     private int ViewCount;
 
+    public Post() {}
     public Post(String body, String tags, String title) {
         Body = body;
         Tags = tags;
