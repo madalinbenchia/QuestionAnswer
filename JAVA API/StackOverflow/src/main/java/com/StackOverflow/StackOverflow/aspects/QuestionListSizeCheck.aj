@@ -13,7 +13,7 @@ pointcut maxNumberCheck() : execution(* QuestionService.GetQuestions(..));
 	
 	after() returning(Object result) : maxNumberCheck() {
 		Object[] arguments = thisJoinPoint.getArgs();
-		if(((List<Question>)result).size() != (int)arguments[0])
+		if(((List<Question>)result).size() > (int)arguments[0])
 			throw new DifferentListSize();
 	}
 	
