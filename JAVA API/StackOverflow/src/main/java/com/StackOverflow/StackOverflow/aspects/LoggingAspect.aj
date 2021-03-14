@@ -13,7 +13,7 @@ public aspect LoggingAspect {
 	}
 	
 	after() returning(Object result) : methodExecuted() {
-		String loggedInfo = "Exited " + thisJoinPoint.getSignature() + " with returned value: " + result.toString();
+		String loggedInfo = "Exited " + thisJoinPoint.getSignature() + " with returned value: " + result;
 		logger.info(loggedInfo);
 	}
 }
