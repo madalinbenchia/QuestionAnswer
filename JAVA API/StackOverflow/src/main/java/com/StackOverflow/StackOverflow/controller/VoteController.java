@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/vote")
 @Api(value = "/vote",
