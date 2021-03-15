@@ -1,6 +1,6 @@
 package com.StackOverflow.StackOverflow.aspects;
 
-import com.StackOverflow.StackOverflow.exception.post.NegativeMaxNumberException;
+import com.StackOverflow.StackOverflow.exception.post.NegativeArgumentException;
 import com.StackOverflow.StackOverflow.service.QuestionService;
 import com.StackOverflow.StackOverflow.service.UserService;
 public aspect CheckNegativeArgumentsAspect {
@@ -10,6 +10,6 @@ public aspect CheckNegativeArgumentsAspect {
 	before() : maxNumberCheck() {
 		Object[] arguments = thisJoinPoint.getArgs();
 		if((int)arguments[0] < 0)
-			throw  new NegativeMaxNumberException();
+			throw  new NegativeArgumentException();
 	}
 }
