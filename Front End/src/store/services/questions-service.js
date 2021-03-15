@@ -68,11 +68,13 @@ function get(id) {
   const options = {
     headers: {}
   };
-
-  return axios.get(`${url}/question?id=${id}`, options).then(response => {
-    let question = response.data;
-    return question;
-  });
+  console.log(id);
+  return axios
+    .get(`${url}/question/single?id=${id}`, options)
+    .then(response => {
+      let question = response.data;
+      return question;
+    });
 }
 
 function add(question) {

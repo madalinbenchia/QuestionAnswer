@@ -13,31 +13,31 @@
               <i
                 style="cursor:pointer; margin-left: 8px;font-size: 200%"
                 class="fas fa-chevron-up"
-                @click="UpVote(question.Id)"
+                @click="UpVote(question.id)"
               ></i>
               </el-tooltip>
             </div>
-            <h1 v-if="question.Score > 99" style="margin-left:8px; color:gray">
-              {{ question.Score }}
+            <h1 v-if="question.score > 99" style="margin-left:8px; color:gray">
+              {{ question.score }}
             </h1>
             <h1
-              v-else-if="question.Score > 9"
+              v-else-if="question.score > 9"
               style="margin-left:9px; color:gray"
             >
-              {{ question.Score }}
+              {{ question.score }}
             </h1>
             <h1
-              v-else-if="question.Score <= 9"
+              v-else-if="question.score <= 9"
               style="margin-left:15px;color:gray"
             >
-              {{ question.Score }}
+              {{ question.score }}
             </h1>
              <div style="margin-top:10px;">
                 <el-tooltip content="This question is not useful" placement="bottom">
               <i
                 style="margin-left: 8px;font-size: 200%; cursor:pointer;"
                 class="fas fa-chevron-down"
-                @click="DownVote(question.Id)"
+                @click="DownVote(question.id)"
               ></i>
                 </el-tooltip>
             </div>
@@ -49,15 +49,15 @@
             footer-classes="pb-2"
             style="margin-left:80px ;margin-top:-220px"
           >
-            <h2 slot="header" class="h2 mb-0">{{ question.Title }}</h2>
+            <h2 slot="header" class="h2 mb-0">{{ question.title }}</h2>
 
           
-            <el-tooltip v-if = "user.UserId==question.OwnerUserId" slot="header"  style="cursor: pointer; float:right;top:-28px; position:relative; font-size:large" content="Delete" placement="top">
-              <i id = "delq" class="far fa-trash-alt" @click="deleteQuestion(question.Id)"></i>
+            <el-tooltip v-if = "user.UserId==question.ownerUserId" slot="header"  style="cursor: pointer; float:right;top:-28px; position:relative; font-size:large" content="Delete" placement="top">
+              <i id = "delq" class="far fa-trash-alt" @click="deleteQuestion(question.id)"></i>
             </el-tooltip>
 
-             <el-tooltip  v-if = "user.UserId==question.OwnerUserId" slot="header"  style="cursor: pointer; float:right;top:-28px; position:relative; font-size:large;  margin-right:6px" content="Edit" placement="top">
-              <i class="far fa-edit" @click="editQuestion(question.Id)"></i>
+             <el-tooltip  v-if = "user.UserId==question.ownerUserId" slot="header"  style="cursor: pointer; float:right;top:-28px; position:relative; font-size:large;  margin-right:6px" content="Edit" placement="top">
+              <i class="far fa-edit" @click="editQuestion(question.id)"></i>
             </el-tooltip>
           
 
@@ -75,19 +75,19 @@
               </p>
             </div>
             
-            <p class="card-text mb-4" v-html="question.Body"></p>
+            <p class="card-text mb-4" v-html="question.body"></p>
             <span
-              v-for="tag in question.Tags.split('<')"
+              v-for="tag in question.tags.split('<')"
               :key="tag.id"
               class="badge badge-default mr-1"
               >{{ tag.slice(0, -1) }}</span
             >
           </card>
           <h1 style="margin-left:80px; margin-bottom:40px">
-            {{ question.AnswersList.length }} Answers
+            {{ question.answers.length }} Answers
           </h1>
          
-          <div v-for="(answer,index) in question.AnswersList" :key="answer.Id">
+          <div v-for="(answer,index) in question.answers" :key="answer.id">
               <qanswer v-bind:index="index" 
               v-bind:answer="answer"
               v-bind:question="question">
@@ -99,14 +99,10 @@
           </h1>
 
           <form ref="profile_form" @submit.prevent="handleSubmit">
-            <!-- <html-editor
-              v-model="answ.Body"
-              name="editor"
-              style="margin-left:80px;"
-            /> -->
+    
 
                <vue-editor
-                v-model="answ.Body"
+                v-model="answ.body"
                 :editorToolbar="customToolbar"
                  style="margin-left:80px;"
               ></vue-editor>
@@ -168,17 +164,16 @@ export default {
       questionOwner: "",
       qowner:"",
       question: {
-        Body: "",
-        Tags: "",
-        Title: "",
-        OwneruserId: "",
-        AcceptedAnswerId: "",
-        AnswersList: []
+        body: "",
+        tags: "",
+        title: "",
+        owneruserId: "",
+        acceptedAnswerId: "",
+        answers: []
       },
       answ: {
-        Body: "",
-        OwnerUserId: "",
-        ParentId: ""
+        body: "",
+        userId: "",
       },
       comment: {
         PostId:  "",
@@ -196,24 +191,24 @@ export default {
   methods: {
     async get() {
       try {
-        
         this.user = await { ... this.$store.getters.currentUser };
+        
         const id = this.$route.params.id;
         await this.$store.dispatch("questions/get", id);
         this.question = this.$store.getters["questions/question"];
         this.loading = false;
 
 
-        const questionOwnerId = this.question.OwnerUserId;
+        const questionOwnerId = this.question.ownerUserId;
    
         await this.$store.dispatch("users/get", questionOwnerId);
         this.questionOwner = await { ...this.$store.getters["users/user"] };
 
-        this.askedTimeAgo = moment(this.question.CreationDate).fromNow();
-        if(this.question.LastEditDate == '0001-01-01T00:00:00')
+        this.askedTimeAgo = moment(this.question.creationDate).fromNow();
+        if(this.question.lastEditDate == '0001-01-01T00:00:00')
           this.editedTimeAgo = 0;
         else
-        this.editedTimeAgo = moment(this.question.LastEditDate).fromNow();
+        this.editedTimeAgo = moment(this.question.lastEditDate).fromNow();
 
       } catch (error) {
         console.log(error)
@@ -241,16 +236,19 @@ export default {
             });
           }
         else {
-        this.answ.OwnerUserId = this.user.UserId;
-        this.answ.ParentId = this.question.Id;
-        this.answ.LastEditorDisplayName = this.user.DisplayName;
-        await this.$store.dispatch("answers/add", this.answ);
+        this.answ.userId = this.user.userId;
+        const qId = this.question.id;
+        this.answ.lastEditorDisplayName = this.user.displayName;
+        this.answ.title="answer title"
+        this.answ.tags="tag"
+        const payload = {qId, answ: this.answ}
+        await this.$store.dispatch("answers/add", payload);
        
 
-        await this.$store.dispatch("questions/get", this.question.Id);
+        await this.$store.dispatch("questions/get", this.question.id);
         this.question = this.$store.getters["questions/question"];
 
-        this.answ.Body="";
+        this.answ.body="";
 
         this.$notify({
           type: "success",
@@ -258,6 +256,7 @@ export default {
         });
         }
       } catch (error) {
+        console.log(error)
         this.$notify({
           type: "danger",
           message: "Oops, something went wrong!"

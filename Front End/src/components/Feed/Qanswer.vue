@@ -5,30 +5,30 @@
         <i
           style="margin-left: 8px;font-size: 200%; cursor:pointer;"
           class="fas fa-chevron-up"
-          @click="UpVote(localAnswer.Id)"
+          @click="UpVote(localAnswer.id)"
         ></i>
       </el-tooltip>
     </div>
-    <h2 v-if="localAnswer.Score > 99" style="margin-left:8px; color:gray">
-      {{ localAnswer.Score }}
+    <h2 v-if="localAnswer.score > 99" style="margin-left:8px; color:gray">
+      {{ localAnswer.score }}
       <el-tooltip
-        v-if="authUser.UserId == question.OwnerUserId"
+        v-if="authUser.userId == question.ownerUserId"
         content="Mark this answer as correct"
         placement="right"
       >
         <i
           :class="
-            localAnswer.Id == question.AcceptedAnswerId ? 'greenClass' : ''
+            localAnswer.id == question.acceptedAnswerId ? 'greenClass' : ''
           "
-          @click="correctAnswer(localAnswer.Id)"
+          @click="correctAnswer(localAnswer.id)"
           style="margin-left:8px; cursor:pointer"
           class="fas fa-check"
-          v-bind:id="localAnswer.Id"
+          v-bind:id="localAnswer.id"
         ></i>
       </el-tooltip>
 
       <el-tooltip
-        v-else-if="localAnswer.Id == question.AcceptedAnswerId"
+        v-else-if="localAnswer.id == question.acceptedAnswerId"
         content="This answer is marked as correct"
         placement="right"
       >
@@ -38,25 +38,25 @@
         ></i>
       </el-tooltip>
     </h2>
-    <h2 v-else-if="localAnswer.Score > 9" style="margin-left:9px; color:gray">
-      {{ localAnswer.Score }}
+    <h2 v-else-if="localAnswer.score > 9" style="margin-left:9px; color:gray">
+      {{ localAnswer.score }}
       <el-tooltip
-        v-if="authUser.UserId == question.OwnerUserId"
+        v-if="authUser.userId == question.ownerUserId"
         content="Mark this answer as correct"
         placement="right"
       >
         <i
           :class="
-            localAnswer.Id == question.AcceptedAnswerId ? 'greenClass' : ''
+            localAnswer.id == question.acceptedAnswerId ? 'greenClass' : ''
           "
-          @click="correctAnswer(localAnswer.Id)"
+          @click="correctAnswer(localAnswer.id)"
           style="margin-left:8px; cursor:pointer"
           class="fas fa-check"
-          v-bind:id="localAnswer.Id"
+          v-bind:id="localAnswer.id"
         ></i>
       </el-tooltip>
       <el-tooltip
-        v-else-if="localAnswer.Id == question.AcceptedAnswerId"
+        v-else-if="localAnswer.id == question.acceptedAnswerId"
         content="This answer is marked as correct"
         placement="right"
       >
@@ -66,25 +66,25 @@
         ></i>
       </el-tooltip>
     </h2>
-    <h2 v-else-if="localAnswer.Score <= 9" style="margin-left:15px;color:gray">
-      {{ localAnswer.Score }}
+    <h2 v-else-if="localAnswer.score <= 9" style="margin-left:15px;color:gray">
+      {{ localAnswer.score }}
       <el-tooltip
-        v-if="authUser.UserId == question.OwnerUserId"
+        v-if="authUser.userId == question.ownerUserId"
         content="Mark this answer as correct"
         placement="right"
       >
         <i
           :class="
-            localAnswer.Id == question.AcceptedAnswerId ? 'greenClass' : ''
+            localAnswer.id == question.acceptedAnswerId ? 'greenClass' : ''
           "
-          @click="correctAnswer(localAnswer.Id)"
+          @click="correctAnswer(localAnswer.id)"
           style="margin-left:8px; cursor:pointer"
           class="fas fa-check"
-          v-bind:id="localAnswer.Id"
+          v-bind:id="localAnswer.id"
         ></i>
       </el-tooltip>
       <el-tooltip
-        v-else-if="localAnswer.Id == question.AcceptedAnswerId"
+        v-else-if="localAnswer.id == question.acceptedAnswerId"
         content="This answer is marked as correct"
         placement="right"
       >
@@ -99,14 +99,14 @@
         <i
           style="margin-left: 8px;font-size: 200%; cursor:pointer;"
           class="fas fa-chevron-down"
-          @click="DownVote(localAnswer.Id)"
+          @click="DownVote(localAnswer.id)"
         ></i>
       </el-tooltip>
     </div>
 
     <card class="no-border-card" style="margin-left:80px; margin-top:-80px">
       <el-tooltip
-        v-if="authUser.UserId == localAnswer.OwnerUserId"
+        v-if="authUser.userId == localAnswer.ownerUserId"
         style="cursor: pointer; float:right;top:-10px; position:relative; font-size:large"
         content="Delete"
         placement="top"
@@ -114,35 +114,32 @@
         <i
           id="delq"
           class="far fa-trash-alt"
-          @click="deleteAnswer(localAnswer.Id)"
+          @click="deleteAnswer(localAnswer.id)"
         ></i>
       </el-tooltip>
 
       <el-tooltip
-        v-if="authUser.UserId == localAnswer.OwnerUserId"
+        v-if="authUser.userId == localAnswer.ownerUserId"
         style="cursor: pointer; float:right;top:-10px; position:relative; font-size:large; margin-right:6px"
         content="Edit"
         placement="top"
       >
-        <i class="far fa-edit" @click="editAnswer(localAnswer.Id)"></i>
+        <i class="far fa-edit" @click="editAnswer(localAnswer.id)"></i>
       </el-tooltip>
 
-      <p class="card-text" v-html="localAnswer.Body"></p>
+      <p class="card-text" v-html="localAnswer.body"></p>
       <p class="" style="font-size:smaller; margin-left:80%; color:gray">
-        answered <i>{{ format_date(localAnswer.CreationDate) }}</i> by
-        <b style="cursor:pointer" @click="viewUser(answerOwner.UserId)">{{
-          answerOwner.DisplayName
+        answered <i>{{ format_date(localAnswer.creationDate) }}</i> by
+        <b style="cursor:pointer" @click="viewUser(answerOwner.userId)">{{
+          answerOwner.displayName
         }}</b>
       </p>
-      <div
-        v-for="(comment, index) in localAnswer.CommentsList"
-        :key="comment.Id"
-      >
+      <div v-for="(comment, index) in localAnswer.comments" :key="comment.id">
         <comment
-          v-bind:id="comment.Id"
-          v-bind:text="comment.Text"
-          v-bind:cdate="comment.CreationDate"
-          v-bind:uid="comment.UserId"
+          v-bind:id="comment.postId"
+          v-bind:text="comment.text"
+          v-bind:cdate="comment.creationDate"
+          v-bind:uid="comment.userId"
         ></comment>
       </div>
 
@@ -155,7 +152,7 @@
           placeholder="Write your comment"
           rows="1"
           @keydown.enter.exact.prevent
-          @keyup.enter.exact="addComment(localAnswer.Id, index)"
+          @keyup.enter.exact="addComment(localAnswer.id, index)"
           @keydown.enter.shift.exact="newline"
         >
         </textarea>
@@ -205,12 +202,12 @@ export default {
 
   methods: {
     async get() {
-      await this.$store.dispatch("users/get", this.localAnswer.OwnerUserId);
+      await this.$store.dispatch("users/get", this.localAnswer.ownerUserId);
       this.answerOwner = await { ...this.$store.getters["users/user"] };
 
       this.authUser = await { ...this.$store.getters.currentUser };
 
-      const questionOwnerId = this.question.OwnerUserId;
+      const questionOwnerId = this.question.ownerUserId;
 
       await this.$store.dispatch("users/get", questionOwnerId);
       this.questionOwner = await { ...this.$store.getters["users/user"] };

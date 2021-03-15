@@ -21,7 +21,7 @@ function get(id) {
   const options = {
     headers: {}
   };
-  return axios.get(`${url}/me?id=${id}`, options).then(response => {
+  return axios.get(`${url}/user/get/${id}`, options).then(response => {
     let user = response.data;
     return user;
   });

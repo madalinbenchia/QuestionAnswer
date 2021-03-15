@@ -1,7 +1,7 @@
 import qs from "qs";
 import axios from "axios";
 
-const url = "https://localhost:44329/api";
+const url = process.env.VUE_APP_API_BASE_URL;
 
 function list() {
   const options = {
@@ -28,17 +28,18 @@ function get(id) {
   });
 }
 
-function add(answer) {
+function add(payload) {
   //   const payload = jsona.serialize({
   //     stuff: user,
   //     includeNames: null
   //   });
 
   const options = {};
-
-  return axios.post(`${url}/post/addanswer`, answer, options).then(response => {
-    return response.data;
-  });
+  return axios
+    .post(`${url}/answer/add?questionId=${payload.qId}`, payload.answ, options)
+    .then(response => {
+      return response.data;
+    });
 }
 
 function update(answer) {

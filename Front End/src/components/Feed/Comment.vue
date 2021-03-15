@@ -7,7 +7,7 @@
           style="cursor:pointer"
           @click="viewUser(user.UserId)"
         >
-          {{ user.DisplayName }}
+          {{ user.displayName }}
         </h6>
         <p class="text-sm lh-160" v-html="text"></p>
         <p
