@@ -52,11 +52,11 @@
             <h2 slot="header" class="h2 mb-0">{{ question.title }}</h2>
 
           
-            <el-tooltip v-if = "user.UserId==question.ownerUserId" slot="header"  style="cursor: pointer; float:right;top:-28px; position:relative; font-size:large" content="Delete" placement="top">
+            <el-tooltip v-if = "user.userId==question.ownerUserId" slot="header"  style="cursor: pointer; float:right;top:-28px; position:relative; font-size:large" content="Delete" placement="top">
               <i id = "delq" class="far fa-trash-alt" @click="deleteQuestion(question.id)"></i>
             </el-tooltip>
 
-             <el-tooltip  v-if = "user.UserId==question.ownerUserId" slot="header"  style="cursor: pointer; float:right;top:-28px; position:relative; font-size:large;  margin-right:6px" content="Edit" placement="top">
+             <el-tooltip  v-if = "user.userId==question.ownerUserId" slot="header"  style="cursor: pointer; float:right;top:-28px; position:relative; font-size:large;  margin-right:6px" content="Edit" placement="top">
               <i class="far fa-edit" @click="editQuestion(question.id)"></i>
             </el-tooltip>
           
@@ -67,7 +67,7 @@
               class="d-flex justify-content-between mt-2"
             >
               <p slot="header" class="mr-4">
-                Asked <i>{{ this.askedTimeAgo }}</i> by  <b style="cursor:pointer" @click="viewUser(questionOwner.UserId)">{{this.questionOwner.DisplayName}}</b>
+                Asked <i>{{ this.askedTimeAgo }}</i> by  <b style="cursor:pointer" @click="viewUser(questionOwner.userId)">{{this.questionOwner.displayName}}</b>
               </p>
 
                <p v-if="editedTimeAgo != 0"slot="header" class="mr-4">
@@ -82,7 +82,8 @@
               class="badge badge-default mr-1"
               >{{ tag.slice(0, -1) }}</span
             >
-          </card>
+          </card
+          ><div v-if="question.answers != null">
           <h1 style="margin-left:80px; margin-bottom:40px">
             {{ question.answers.length }} Answers
           </h1>
@@ -93,6 +94,10 @@
               v-bind:question="question">
               </qanswer>
           </div>
+          </div>
+          <div v-else>   <h1 style="margin-left:80px; margin-bottom:40px; margin-top:15px">
+            0 Answers
+          </h1></div>
 
           <h1 style="margin-left:80px; margin-bottom:40px; margin-top:15px">
             Your Answer
@@ -192,7 +197,7 @@ export default {
     async get() {
       try {
         this.user = await { ... this.$store.getters.currentUser };
-        
+    
         const id = this.$route.params.id;
         await this.$store.dispatch("questions/get", id);
         this.question = this.$store.getters["questions/question"];
@@ -205,7 +210,7 @@ export default {
         this.questionOwner = await { ...this.$store.getters["users/user"] };
 
         this.askedTimeAgo = moment(this.question.creationDate).fromNow();
-        if(this.question.lastEditDate == '0001-01-01T00:00:00')
+        if(this.question.lastEditDate == null)
           this.editedTimeAgo = 0;
         else
         this.editedTimeAgo = moment(this.question.lastEditDate).fromNow();
@@ -228,7 +233,7 @@ export default {
 
     async handleSubmit() {
       try {
-        if(this.$store.getters.isAuthenticated == false)
+          if (this.$store.getters.currentUser == null)
           {
               this.$notify({
               type: "danger",
@@ -315,14 +320,14 @@ export default {
     },
 
      async UpVote(id) {
-        if (this.$store.getters.isAuthenticated == false) {
+          if (this.$store.getters.currentUser == null) {
           this.$notify({
             type: "danger",
             message: "Oops, login to upvote!"
           });
         } else {
        try{
-      let v = { PostId: id, UserId: this.user.UserId, VoteTypeId: "2" };
+      let v = { postId: id, userId: this.user.userId, voteTypeId: "2" };
 
       await this.$store.dispatch("questions/vote", v);
 
@@ -338,20 +343,21 @@ export default {
     },
 
      async DownVote(id) {
-        if (this.$store.getters.isAuthenticated == false) {
+         if (this.$store.getters.currentUser == null) {
           this.$notify({
             type: "danger",
             message: "Oops, login to downvote!"
           });
         } else {
        try{
-      let v = { PostId: id, UserId: this.user.UserId, VoteTypeId: "3" };
+      let v = {  postId: id, userId: this.user.userId, voteTypeId: "3" };
 
       await this.$store.dispatch("questions/vote", v);
 
       await this.$store.dispatch("questions/get", id);
       this.question = this.$store.getters["questions/question"];
        }catch(error){
+         console.log(error)
           this.$notify({
           type: "danger",
           message: "Oops, something went wrong!"

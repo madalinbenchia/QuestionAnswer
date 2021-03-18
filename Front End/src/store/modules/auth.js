@@ -73,18 +73,17 @@ export default {
     },
 
     logout(context, payload) {
-      return vueAuth.logout().then(response => {
-        console.log("in logout");
-        context.commit("isAuthenticated", {
-          isAuthenticated: vueAuth.isAuthenticated()
-        });
-        localStorage.removeItem("currentUser");
-
-        //delete axios.defaults.headers.common["Authorization"];
-
-        router.push({ name: "Login" });
-        window.location.replace("/");
-      });
+      localStorage.removeItem("currentUser");
+      // localStorage.setItem("currentUser", null);
+      // return vueAuth.logout().then(response => {
+      //   console.log(response);
+      //   context.commit("isAuthenticated", {
+      //     isAuthenticated: false
+      //   });
+      //   localStorage.removeItem("currentUser");
+      //  });
+      router.push({ name: "Login" });
+      window.location.replace("/");
     }
   }
 };

@@ -1,7 +1,7 @@
 import qs from "qs";
 import axios from "axios";
 
-const url = "https://localhost:44329/api";
+const url = process.env.VUE_APP_API_BASE_URL;
 
 function list() {
   const options = {
@@ -22,10 +22,12 @@ function get(id) {
     headers: {}
   };
 
-  return axios.get(`${url}/comments?postId=${id}`, options).then(response => {
-    let comment = response.data;
-    return comment;
-  });
+  return axios
+    .get(`${url}/comment/all?answerId=${id}`, options)
+    .then(response => {
+      let comment = response.data;
+      return comment;
+    });
 }
 
 function add(comment) {
@@ -36,11 +38,9 @@ function add(comment) {
 
   const options = {};
 
-  return axios
-    .post(`${url}/post/addcomment`, comment, options)
-    .then(response => {
-      return response.data;
-    });
+  return axios.post(`${url}/comment/add`, comment, options).then(response => {
+    return response.data;
+  });
 }
 
 function update(comment) {

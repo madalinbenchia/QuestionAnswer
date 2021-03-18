@@ -62,7 +62,7 @@
                   Total UpVotes
                 </h5>
                 <span class="h2 font-weight-bold mb-0 text-white">{{
-                  user.UpVotes
+                  user.upVotes
                 }}</span>
               </div>
               <div class="col-auto">
@@ -91,7 +91,7 @@
                   Total downvotes
                 </h5>
                 <span class="h2 font-weight-bold mb-0 text-white">{{
-                  user.DownVotes
+                  user.downVotes
                 }}</span>
               </div>
               <div class="col-auto">

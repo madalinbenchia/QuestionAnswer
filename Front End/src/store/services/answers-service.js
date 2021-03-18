@@ -22,10 +22,12 @@ function get(id) {
     headers: {}
   };
 
-  return axios.get(`${url}/question?id=${id}`, options).then(response => {
-    let answer = response.data;
-    return answer;
-  });
+  return axios
+    .get(`${url}/answer/singleanswer?answerId=${id}`, options)
+    .then(response => {
+      let answer = response.data;
+      return answer;
+    });
 }
 
 function add(payload) {
@@ -42,21 +44,19 @@ function add(payload) {
     });
 }
 
-function update(answer) {
+function update(payload) {
   //   const payload = jsona.serialize({
   //     stuff: user,
   //     includeNames: []
   //   });
-
-  const options = {
-    // headers: {
-    //   Accept: "application/vnd.api+json",
-    //   "Content-Type": "application/vnd.api+json"
-    // }
-  };
-
+  console.log(payload);
+  const options = {};
   return axios
-    .put(`${url}/post/updateanswer?id=${answer.Id}`, answer, options)
+    .put(
+      `${url}/answer/update?userId=${payload.u.userId}&userDisplayName=${payload.u.displayName}`,
+      payload.a,
+      options
+    )
     .then(response => {
       return response.data;
     });
@@ -65,7 +65,7 @@ function update(answer) {
 function destroy(id) {
   const options = {};
 
-  return axios.delete(`${url}/post/deleteanswer?id=${id}`, options);
+  return axios.delete(`${url}/answer/delete?id=${id}`, options);
 }
 
 export default {

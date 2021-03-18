@@ -193,7 +193,8 @@ export default {
       questionOwner: "",
       comm: [],
       localAnswer: this.answer,
-      localComments: ""
+      localComments: "",
+      oldFav: -1
     };
   },
   created() {
@@ -224,29 +225,34 @@ export default {
       });
     },
 
-    async correctAnswer(Id) {
-      this.question.AcceptedAnswerId = Id;
-      this.question.LastEditorDisplayName = this.questionOwner.DisplayName;
-      this.question.CloseDate = "2011-01-01T02:11:46.083";
-      await this.$store.dispatch("questions/update", this.question);
-      var element = document.getElementById(Id);
-      element.classList.add("greenClassvu");
+    async correctAnswer(id) {
+      this.oldFav = document.getElementsByClassName("greenClass");
+      if (this.oldFav[0]) {
+        this.oldFav[0].classList.remove("greenClass");
+      }
+      const payload = {
+        questionId: this.question.id,
+        answerId: id
+      };
+      await this.$store.dispatch("questions/markAsCorrect", payload);
+      var element = document.getElementById(id);
+      element.classList.add("greenClass");
     },
 
     async UpVote(id) {
       try {
-        if (this.$store.getters.isAuthenticated == false) {
+        if (this.$store.getters.currentUser == null) {
           this.$notify({
             type: "danger",
             message: "Oops, login to upvote!"
           });
         } else {
-          let v = { PostId: id, UserId: this.authUser.UserId, VoteTypeId: "2" };
+          let v = { postId: id, userId: this.authUser.userId, voteTypeId: "2" };
 
           await this.$store.dispatch("questions/vote", v);
 
-          await this.$store.dispatch("questions/get", id);
-          this.localAnswer = this.$store.getters["questions/question"];
+          await this.$store.dispatch("answers/get", id);
+          this.localAnswer = this.$store.getters["answers/answer"];
         }
       } catch (error) {
         this.$notify({
@@ -257,18 +263,18 @@ export default {
     },
 
     async DownVote(id) {
-      if (this.$store.getters.isAuthenticated == false) {
+      if (this.$store.getters.currentUser == null) {
         this.$notify({
           type: "danger",
           message: "Oops, login to downvote!"
         });
       } else {
         try {
-          let v = { PostId: id, UserId: this.authUser.UserId, VoteTypeId: "3" };
+          let v = { postId: id, userId: this.authUser.userId, voteTypeId: "3" };
 
           await this.$store.dispatch("questions/vote", v);
-          await this.$store.dispatch("questions/get", id);
-          this.localAnswer = this.$store.getters["questions/question"];
+          await this.$store.dispatch("answers/get", id);
+          this.localAnswer = this.$store.getters["answers/answer"];
         } catch (error) {
           this.$notify({
             type: "danger",
@@ -288,9 +294,9 @@ export default {
       } else {
         try {
           let c = {
-            PostId: id,
-            Text: this.comm[index],
-            UserId: this.authUser.UserId
+            postId: id,
+            text: this.comm[index],
+            userId: this.authUser.userId
           };
 
           await this.$store.dispatch("questions/comment", c);
@@ -300,7 +306,7 @@ export default {
           this.localComments = await {
             ...this.$store.getters["comments/comment"]
           };
-          this.localAnswer.CommentsList = this.localComments;
+          this.localAnswer.comments = this.localComments;
 
           this.$notify({
             type: "success",

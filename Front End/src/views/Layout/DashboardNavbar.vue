@@ -77,7 +77,7 @@
               <i class="fas fa-user-alt mr-4 mt-0" style="font-size:150%"></i>
 
               <span class="mt-0 font-weight-bold">{{
-                this.user.DisplayName
+                this.user.displayName
               }}</span>
             </div>
           </div>

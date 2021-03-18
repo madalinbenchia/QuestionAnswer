@@ -33,7 +33,7 @@
                 maxlength="300"
                 placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
                 autocomplete="off"
-                v-model="question.Title"
+                v-model="question.title"
               />
 
               <label for="Body" style="font-weight: 700; font-size:19px"
@@ -47,7 +47,7 @@
               </p>
               <!-- <html-editor v-model="question.Body" name="editor" /> -->
               <vue-editor
-                v-model="question.Body"
+                v-model="question.body"
                 :editorToolbar="customToolbar"
               ></vue-editor>
               <label for="Title" style="font-weight: 700; font-size:19px"
@@ -107,10 +107,10 @@ export default {
       user: null,
       tags2: [],
       question: {
-        Body: "",
-        Tags: "",
-        Title: "",
-        OwnerUserId: ""
+        body: "",
+        tags: "",
+        title: "",
+        ownerUserId: ""
       }
     };
   },
@@ -127,8 +127,7 @@ export default {
         await this.$store.dispatch("questions/get", id);
         this.question = this.$store.getters["questions/question"];
 
-        this.tags2 = this.question.Tags.toString();
-
+        this.tags2 = this.question.tags.toString();
         this.tags2 = this.tags2.split("<");
         for (var i = 0; i < this.tags2.length - 1; i++) {
           this.tags2[i] = this.tags2[i + 1];
@@ -138,6 +137,7 @@ export default {
         for (var i = 0; i < this.tags2.length; i++) {
           this.tags2[i] = "<" + this.tags2[i];
         }
+
         this.loading = false;
 
         // const questionOwnerId = this.question.OwnerUserId;
@@ -161,20 +161,23 @@ export default {
     goBack() {
       this.$router.push({
         name: "View Question",
-        params: { id: this.question.Id }
+        params: { id: this.question.id }
       });
     },
 
     async handleSubmit() {
       try {
-        this.question.Tags = this.tags2.toString().replaceAll(",", "");
+        this.question.tags = this.tags2.toString().replaceAll(",", "");
 
         this.user = await { ...this.$store.getters.currentUser };
-        this.question.LastEditorDisplayName = this.user.DisplayName;
-        this.question.CloseDate = "2011-01-01T02:11:46.083";
-        this.question.LastActivityDate = moment().format();
-        this.question.LastEditDate = moment().format();
-        await this.$store.dispatch("questions/update", this.question);
+        this.question.lastEditorDisplayName = this.user.displayName;
+        this.question.closeDate = "2011-01-01T02:11:46.083";
+        this.question.lastActivityDate = moment().format();
+        this.question.lastEditDate = moment().format();
+        this.question.userId = this.user.userId;
+        const payload = { q: this.question, u: this.user };
+
+        await this.$store.dispatch("questions/update", payload);
 
         this.question = await this.$store.getters["questions/question"];
         this.$notify({
@@ -183,7 +186,7 @@ export default {
         });
         this.$router.push({
           name: "View Question",
-          params: { id: this.question.Id }
+          params: { id: this.question.id }
         });
       } catch (error) {
         console.log(error);

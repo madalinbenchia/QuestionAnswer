@@ -1,7 +1,8 @@
 import store from "../store";
 
 export default function auth({ next, router }) {
-  if (!store.getters.isAuthenticated) {
+  console.log(store.getters);
+  if (store.getters.currentUser == null) {
     return router.push({ name: "Login" });
   }
 

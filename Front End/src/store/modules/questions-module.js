@@ -97,6 +97,12 @@ export const actions = {
     });
   },
 
+  markAsCorrect({ commit, dispatch }, params) {
+    return service.markAsCorrect(params, this.$axios).then(question => {
+      commit("SET_RESOURCE", question);
+    });
+  },
+
   destroy({ commit, dispatch }, params) {
     return service.destroy(params, this.$axios);
   },

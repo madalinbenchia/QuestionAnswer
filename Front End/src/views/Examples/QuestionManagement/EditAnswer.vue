@@ -26,7 +26,7 @@
               </p>
               <!-- <html-editor v-model="question.body" name="editor" /> -->
               <vue-editor
-                v-model="answer.Body"
+                v-model="answer.body"
                 :editorToolbar="customToolbar"
               ></vue-editor>
 
@@ -116,17 +116,21 @@ export default {
         this.answer.Title = "";
 
         this.answer.LastEditorDisplayName = this.user.DisplayName;
+        this.answer.userId = this.user.userId;
+        this.answer.tags = "tag";
+        this.answer.title = "title";
+        const payload = { a: this.answer, u: this.user };
 
-        await this.$store.dispatch("answers/update", this.answer);
+        await this.$store.dispatch("answers/update", payload);
         this.answer = await this.$store.getters["answers/answer"];
-        console.log(this.answer);
+
         this.$notify({
           type: "success",
           message: "Answer edited successfully."
         });
         this.$router.push({
           name: "View Question",
-          params: { id: this.answer.ParentId }
+          params: { id: this.answer.parentId }
         });
       } catch (error) {
         this.$notify({

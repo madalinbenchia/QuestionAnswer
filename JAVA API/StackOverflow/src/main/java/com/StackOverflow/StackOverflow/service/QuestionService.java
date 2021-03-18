@@ -43,6 +43,12 @@ public class QuestionService {
 
 
         try {
+        	Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String strDate = dateFormat.format(date);
+            
+            question.setLastActivityDate(strDate);
+            question.setCreationDate(strDate);
             question.setPostTypeId(1);
             Question questionAdded = questionRepository.AddQuestion(question);
             return questionAdded;

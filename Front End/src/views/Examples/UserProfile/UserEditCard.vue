@@ -78,7 +78,7 @@ export default {
   methods: {
     async handleProfileUpdate() {
       try {
-        this.user.AboutMe = this.editorValue;
+        this.user.aboutMe = this.editorValue;
         await this.$store.dispatch("users/update", this.user);
 
         this.$notify({

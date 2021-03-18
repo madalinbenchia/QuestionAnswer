@@ -137,11 +137,11 @@
               </li>
               <li class="nav-item">
                 <a
-                  href="https://moodle.unibuc.ro/course/info.php?id=3332"
+                  href="https://moodle.unibuc.ro/course/view.php?id=3345"
                   class="nav-link"
                   target="_blank"
                   rel="noopener"
-                  >MODELAREA SISTEMELOR SOFTWARE</a
+                  >PROGRAMAREA CU ASPECTE</a
                 >
               </li>
             </ul>

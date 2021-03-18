@@ -136,9 +136,7 @@ export default {
       try {
         await this.$store.dispatch("questions/list");
         this.questions = await { ...this.$store.getters["questions/list"] };
-        console.log(this.questions)
         this.qloading = false;
-        console.log(this.qloading)
       } catch (error) {
         console.log(error);
         this.$notify({

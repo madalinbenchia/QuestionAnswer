@@ -7,7 +7,7 @@ function list() {
   const options = {
     headers: {}
   };
-  const max = "1";
+  const max = "10";
   return axios
     .get(`${url}/question/all?maxNumber=${max}`, options)
     .then(response => {
@@ -49,7 +49,7 @@ function comment(c) {
     headers: {}
   };
 
-  return axios.post(`${url}/comment/addcomment`, c, options).then(response => {
+  return axios.post(`${url}/comment/add`, c, options).then(response => {
     return response.data;
   });
 }
@@ -59,7 +59,7 @@ function getcomments(id) {
     headers: {}
   };
 
-  return axios.get(`${url}/comments?PostId=${id}`, options).then(response => {
+  return axios.get(`${url}/comments?answerId=${id}`, options).then(response => {
     let comments = response.data;
     return comments;
   });
@@ -90,7 +90,24 @@ function add(question) {
   });
 }
 
-function update(question) {
+function update(payload) {
+  //   const payload = jsona.serialize({
+  //     stuff: user,
+  //     includeNames: []
+  //   });
+  const options = {};
+  return axios
+    .put(
+      `${url}/question/update?userId=${payload.u.userId}&userDisplayName=${payload.u.displayName}`,
+      payload.q,
+      options
+    )
+    .then(response => {
+      return response.data;
+    });
+}
+
+function markAsCorrect(payload) {
   //   const payload = jsona.serialize({
   //     stuff: user,
   //     includeNames: []
@@ -99,7 +116,10 @@ function update(question) {
   const options = {};
 
   return axios
-    .put(`${url}/post/updatequestion`, question, options)
+    .put(
+      `${url}/question/markAsCorrect?questionId=${payload.questionId}&answerId=${payload.answerId}`,
+      options
+    )
     .then(response => {
       return response.data;
     });
@@ -108,7 +128,7 @@ function update(question) {
 function destroy(id) {
   const options = {};
 
-  return axios.delete(`${url}/post/deletequestion?id=${id}`, options);
+  return axios.delete(`${url}/question/delete?id=${id}`, options);
 }
 
 export default {
@@ -120,5 +140,6 @@ export default {
   get,
   add,
   update,
+  markAsCorrect,
   destroy
 };

@@ -207,9 +207,9 @@ export default {
         name: this.name,
         password: btoa(this.password),
         username: this.username,
-        aboutme: this.aboutme,
+        aboutMe: "<p>" + this.aboutme + "<p>",
         age: this.age,
-        displayname: this.displayname,
+        displayName: this.displayname,
         location: this.location
       };
 
