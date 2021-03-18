@@ -205,7 +205,7 @@ export default {
 
       const user = {
         name: this.name,
-        password: btoa(this.password),
+        password: this.password,
         username: this.username,
         aboutMe: "<p>" + this.aboutme + "<p>",
         age: this.age,
