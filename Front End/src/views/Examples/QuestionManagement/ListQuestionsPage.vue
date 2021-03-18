@@ -23,7 +23,7 @@
                 footer-classes="pb-2"
               >
                 <h3 slot="header" class="h3 mb-0">{{ question.title }}</h3>
-                 <p v-if ="question.body.length > 300" class="card-text mb-4" v-html="question.Body.substring(0,300) + ' ...' "></p>
+                 <p v-if ="question.body.length > 300" class="card-text mb-4" v-html="question.body.substring(0,300) + ' ...' "></p>
                  <p v-else class="card-text mb-4" v-html="question.body"></p>
                 <span
                   v-for="tag in question.tags.split('<')"
