@@ -1,5 +1,6 @@
 package com.StackOverflow.StackOverflow.repository;
 
+import com.StackOverflow.StackOverflow.model.Question;
 import com.StackOverflow.StackOverflow.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -94,7 +95,39 @@ public class UserRepository {
         jdbcTemplate.update(preparedStatementCreator);
         return "Success";
     }
+    
+    public List<User> GetTopRatedUsers(int maxNumber) {
+    	
+    	String sqlStatement = "";
+    	switch(maxNumber) {
+	    	case 0:
+	            sqlStatement = "SELECT u.Id, u.AboutMe, u.Age, u.CreationDate," +
+	                "u.DisplayName, u.DownVotes, u.Location, " +
+	                "u.Reputation, u.UpVotes, u.Views, a.Username FROM Users u " +
+	                "LEFT JOIN acounts a on u.AccountId = a.AccountId ORDER BY reputation DESC";
+	            break;
+	        default:
+	            sqlStatement = "SELECT  u.Id, u.AboutMe, u.Age, u.CreationDate," +
+	                "u.DisplayName, u.DownVotes, u.Location, " +
+	                "u.Reputation, u.UpVotes, u.Views, a.Username FROM Users u " +
+	                "LEFT JOIN acounts a on u.AccountId = a.AccountId ORDER BY reputation DESC LIMIT " + maxNumber;
+	            break;
+    	}
+    	
+    	RowMapper<User> mapper = GetUserAccountWithoutPasswordRowMapper();
+        return GetUsersListFromResultSet(jdbcTemplate.query(sqlStatement,mapper));
+    }
+    
+    
+    private List<User> GetUsersListFromResultSet(List<User> users) {
 
+        if(users != null && !users.isEmpty()) {
+            return users;
+        } else {
+            return null;
+        }
+    }
+    
     private User GetUserFromResultSet(List<User> users) {
 
         if(users != null && !users.isEmpty()) {
@@ -109,6 +142,22 @@ public class UserRepository {
         return((resultSet, rowNum) ->
                 new User(resultSet.getString("Username"),
                         resultSet.getString("Password"),
+                        resultSet.getInt("Id"),
+                        resultSet.getString("AboutMe"),
+                        resultSet.getInt("Age"),
+                        resultSet.getDate("CreationDate"),
+                        resultSet.getString("DisplayName"),
+                        resultSet.getInt("DownVotes"),
+                        resultSet.getString("Location"),
+                        resultSet.getInt("Reputation"),
+                        resultSet.getInt("UpVotes"),
+                        resultSet.getInt("Views")));
+    }
+    
+    private RowMapper<User>GetUserAccountWithoutPasswordRowMapper() {
+
+        return((resultSet, rowNum) ->
+                new User(resultSet.getString("Username"),
                         resultSet.getInt("Id"),
                         resultSet.getString("AboutMe"),
                         resultSet.getInt("Age"),

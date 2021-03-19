@@ -82,7 +82,9 @@ public class AnswerService {
         answer.setLastEditorUserId(userId);
         //Update the question
         try {
-            return answerRepository.UpdateAnswer(answer);
+            Answer finalAnswer =  answerRepository.UpdateAnswer(answer);
+            finalAnswer.setPostTypeId(2);
+            return finalAnswer;
         }catch (SqlException ex) {
             LOGGER.error(ex.getMessage());
             throw new RuntimeException(ex.getMessage());
@@ -119,7 +121,7 @@ public class AnswerService {
         }
         catch(Exception ex) {
             LOGGER.error(ex.getMessage());
-            throw  new QuestionNotFoundException();
+            throw  new QuestionNotFoundException(); 
         }
 
     }

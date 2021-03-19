@@ -70,9 +70,31 @@ public class UserController {
                        .body(ex.getMessage());
            }
         }
-
-
-
+        
+        @GetMapping("/all")
+        @ApiOperation(value = "Get top users based on score",
+        notes = "Get top maxNumber users ordered by reputation")
+		@ApiResponses(value = {
+		        @ApiResponse(code = 200, message = "The User was successfully get based on the received request"),
+		        @ApiResponse(code = 417, message = "Information provided in the request doesn't not meet the condition.")
+		})
+        public ResponseEntity<Object> GetTopRatedUsers(
+        		@RequestParam
+                @ApiParam(name = "maxNumber", value = "max Number of users retrieve",required = true)
+                        int maxNumber) {
+        	try {
+        		return ResponseEntity
+                        .ok()
+                        .body(userService.GetTopRatedUsers(maxNumber));
+        	}catch(Exception ex) {
+        		 return ResponseEntity
+                         .status(HttpStatus.EXPECTATION_FAILED)
+                         .body(ex.getMessage());
+        	}
+        }
+        
+        
+        
         @PostMapping("/login")
         @ApiOperation(value = "Login a User",
                 notes = "Login a User based on the information received from request")
@@ -100,6 +122,5 @@ public class UserController {
                 }
 
             }
-
 
 }

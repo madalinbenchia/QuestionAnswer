@@ -9,6 +9,9 @@ import com.StackOverflow.StackOverflow.model.Account;
 import com.StackOverflow.StackOverflow.model.User;
 import com.StackOverflow.StackOverflow.repository.AccountRepository;
 import com.StackOverflow.StackOverflow.repository.UserRepository;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -57,7 +60,11 @@ public class UserService {
             throw new UserNotFoundException(userId, ex.getMessage());
         }*/
     }
-
+    
+    public List<User> GetTopRatedUsers(int maxNumber) {
+    	return userRepository.GetTopRatedUsers(maxNumber);
+    }
+    
     @Transactional
     public String UpdateUserUpVotes(int userId, int upVotes) {
         try {

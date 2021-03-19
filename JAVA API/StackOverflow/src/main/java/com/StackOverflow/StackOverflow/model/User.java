@@ -54,6 +54,21 @@ public class User extends Account {
         Views = views;
     }
 
+    
+    public User(String username, int userId, String aboutMe, int age, Date creationDate, String displayName, int downVotes, String location, int reputation, int upVotes, int views) {
+        super(username, "");
+        UserId = userId;
+        AboutMe = aboutMe;
+        Age = age;
+        CreationDate = creationDate;
+        DisplayName = displayName;
+        DownVotes = downVotes;
+        Location = location;
+        Reputation = reputation;
+        UpVotes = upVotes;
+        Views = views;
+    }
+    
     public User(String username, String password, String aboutMe, int age, Date creationDate, String displayName, int downVotes, String location, int reputation, int upVotes, int views) {
         super(username, password);
         AboutMe = aboutMe;

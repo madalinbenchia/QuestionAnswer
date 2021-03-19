@@ -4,6 +4,7 @@ import com.StackOverflow.StackOverflow.dto.question.PostQuestionRequest;
 import com.StackOverflow.StackOverflow.dto.question.PutQuestionRequest;
 import com.StackOverflow.StackOverflow.mapper.QuestionMapper;
 import com.StackOverflow.StackOverflow.model.Question;
+import com.StackOverflow.StackOverflow.service.AnswerService;
 import com.StackOverflow.StackOverflow.service.QuestionService;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,12 @@ public class QuestionController {
 
     private final QuestionService questionService;
     private final QuestionMapper questionMapper;
+    private final AnswerService answerService;
 
-    public QuestionController(QuestionService questionService, QuestionMapper questionMapper) {
+    public QuestionController(QuestionService questionService, QuestionMapper questionMapper, AnswerService answerService) {
         this.questionMapper = questionMapper;
         this.questionService = questionService;
+        this.answerService = answerService;
     }
 
     @PostMapping("/add")
@@ -72,6 +75,8 @@ public class QuestionController {
                     PutQuestionRequest questionRequest) {
         try {
             Question questionUpdated = questionService.UpdateQuestion(userId, userDisplayName, questionMapper.putQuestionRequestToQuestion(questionRequest));
+            questionUpdated.setAnswers(answerService.GetAnswers(questionUpdated.getId()));
+            questionUpdated.setAnswerCount(questionUpdated.getAnswers().size());
             return ResponseEntity
                     .ok()
                     .body(questionUpdated);
@@ -149,6 +154,10 @@ public class QuestionController {
                     int maxNumber) {
         try {
             List<Question> questionList = questionService.GetQuestions(maxNumber);
+            for(Question question : questionList) {
+            	question.setAnswers(answerService.GetAnswers(question.getId()));
+            	question.setAnswerCount(question.getAnswers().size());
+            }
             return ResponseEntity
                     .ok()
                     .body(questionList);
@@ -173,6 +182,8 @@ public class QuestionController {
                     int id) {
         try {
             Question question = questionService.GetQuestionWithAnswers(id);
+            question.setAnswers(answerService.GetAnswers(question.getId()));
+            question.setAnswerCount(question.getAnswers().size());
             return ResponseEntity
                     .ok()
                     .body(question);

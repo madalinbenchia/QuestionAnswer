@@ -6,6 +6,8 @@ import com.StackOverflow.StackOverflow.exception.SqlException;
 import com.StackOverflow.StackOverflow.mapper.AnswerMapper;
 import com.StackOverflow.StackOverflow.model.Answer;
 import com.StackOverflow.StackOverflow.service.AnswerService;
+import com.StackOverflow.StackOverflow.service.CommentService;
+
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +25,12 @@ public class AnswerController {
 
     private final AnswerService answerService;
     private final AnswerMapper answerMapper;
-
-    public AnswerController(AnswerService answerService, AnswerMapper answerMapper) {
+    private final CommentService commentService;
+    
+    public AnswerController(AnswerService answerService, AnswerMapper answerMapper, CommentService commmentService) {
         this.answerMapper = answerMapper;
         this.answerService = answerService;
+        this.commentService = commmentService;
     }
 
     @PostMapping("/add")
@@ -72,6 +76,9 @@ public class AnswerController {
                     int questionId) {
         try {
             List<Answer> answersResult = answerService.GetAnswers(questionId);
+            for(Answer answer : answersResult) {
+            	answer.setComments(commentService.GetAllCommentsForAnAswer(answer.getId()));
+            }
             return ResponseEntity
                     .ok()
                     .body(answersResult);
@@ -96,6 +103,7 @@ public class AnswerController {
                     int answerId) {
         try {
             Answer answerResult = answerService.GetAnswerWithComments(answerId);
+            answerResult.setComments(commentService.GetAllCommentsForAnAswer(answerResult.getId()));
             return ResponseEntity
                     .ok()
                     .body(answerResult);
@@ -156,6 +164,8 @@ public class AnswerController {
                     PutAnswerRequest answerRequest) {
         try {
             Answer answerUpdated = answerService.UpdateAnswer(userId,userDisplayName, answerMapper.putAnswerRequestToAnswer(answerRequest));
+            answerUpdated.setComments(commentService.GetAllCommentsForAnAswer(answerUpdated.getId()));
+            answerUpdated.setCommentCount(answerUpdated.getComments().size());
             return ResponseEntity
                     .ok()
                     .body(answerUpdated);
