@@ -84,8 +84,9 @@ public class AnswerService {
         //Update the question
         try {
             Answer finalAnswer =  answerRepository.UpdateAnswer(answer);
-            finalAnswer.setPostTypeId(2);
-            return finalAnswer;
+            Answer finalAnswerToBeReturned = answerRepository.GetAnswer(finalAnswer.getId());
+            //finalAnswer.setPostTypeId(2);
+            return finalAnswerToBeReturned;
         }catch (SqlException ex) {
             LOGGER.error(ex.getMessage());
             throw new RuntimeException(ex.getMessage());
