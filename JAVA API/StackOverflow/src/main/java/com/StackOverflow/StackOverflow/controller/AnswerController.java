@@ -165,7 +165,12 @@ public class AnswerController {
         try {
             Answer answerUpdated = answerService.UpdateAnswer(userId,userDisplayName, answerMapper.putAnswerRequestToAnswer(answerRequest));
             answerUpdated.setComments(commentService.GetAllCommentsForAnAswer(answerUpdated.getId()));
-            answerUpdated.setCommentCount(answerUpdated.getComments().size());
+            try {
+            	answerUpdated.setCommentCount(answerUpdated.getComments().size());
+            }catch(Exception e) {
+            	answerUpdated.setCommentCount(0);
+            }
+            
             return ResponseEntity
                     .ok()
                     .body(answerUpdated);

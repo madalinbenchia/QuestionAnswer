@@ -76,7 +76,11 @@ public class QuestionController {
         try {
             Question questionUpdated = questionService.UpdateQuestion(userId, userDisplayName, questionMapper.putQuestionRequestToQuestion(questionRequest));
             questionUpdated.setAnswers(answerService.GetAnswers(questionUpdated.getId()));
-            questionUpdated.setAnswerCount(questionUpdated.getAnswers().size());
+            try {
+            	questionUpdated.setAnswerCount(questionUpdated.getAnswers().size());
+            }catch(Exception e) {
+            	questionUpdated.setAnswerCount(0);
+            }
             return ResponseEntity
                     .ok()
                     .body(questionUpdated);
@@ -156,7 +160,12 @@ public class QuestionController {
             List<Question> questionList = questionService.GetQuestions(maxNumber);
             for(Question question : questionList) {
             	question.setAnswers(answerService.GetAnswers(question.getId()));
-            	question.setAnswerCount(question.getAnswers().size());
+            	try {
+            		question.setAnswerCount(question.getAnswers().size());
+            	}catch(Exception e)
+            	{
+            		question.setAnswerCount(0);
+            	}
             }
             return ResponseEntity
                     .ok()
@@ -183,7 +192,12 @@ public class QuestionController {
         try {
             Question question = questionService.GetQuestionWithAnswers(id);
             question.setAnswers(answerService.GetAnswers(question.getId()));
-            question.setAnswerCount(question.getAnswers().size());
+            try {
+            	question.setAnswerCount(question.getAnswers().size());
+            }catch(Exception e)
+            {
+            	question.setAnswerCount(0);
+            }
             return ResponseEntity
                     .ok()
                     .body(question);
