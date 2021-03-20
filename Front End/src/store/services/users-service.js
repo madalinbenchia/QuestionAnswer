@@ -9,12 +9,14 @@ function list(params) {
   const options = {};
 
   const max = "10";
-  return axios.get(`${url}/user?maxNumber=${max}`, options).then(response => {
-    return {
-      list: response.data,
-      meta: response.data.meta
-    };
-  });
+  return axios
+    .get(`${url}/user/all?maxNumber=${max}`, options)
+    .then(response => {
+      return {
+        list: response.data,
+        meta: response.data.meta
+      };
+    });
 }
 
 function get(id) {

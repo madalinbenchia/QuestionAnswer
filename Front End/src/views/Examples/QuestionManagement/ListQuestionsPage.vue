@@ -71,10 +71,10 @@
                   style=" white-space: nowrap;"
                 >
                   <b>#{{ Number(index) + 1 }} </b>
-                  <b @click="viewUser(user.UserId)" style="cursor:pointer">
-                    <i clas="mr-1">  {{ user.DisplayName }} </i></b
+                  <b @click="viewUser(user.userId)" style="cursor:pointer">
+                    <i clas="mr-1">  {{ user.displayName }} </i></b
                   >
-                 : {{ user.Reputation }}  <i class="fas fa-star" style="color:#5e72e4;"></i>
+                 : {{ user.reputation }}  <i class="fas fa-star" style="color:#5e72e4;"></i>
                 </p>
               </card>
             </div>
@@ -128,14 +128,14 @@ export default {
 
   created() {
     this.getQuestionsList();
-    // this.getUsersList();
+    this.getUsersList();
   },
   methods: {
     
     async getQuestionsList() {
       try {
-        await this.$store.dispatch("questions/list");
-        this.questions = await { ...this.$store.getters["questions/list"] };
+       await this.$store.dispatch("questions/list");
+       this.questions = await { ...this.$store.getters["questions/list"] };
         this.qloading = false;
       } catch (error) {
         console.log(error);

@@ -83,7 +83,7 @@
           </div>
         </a>
 
-        <template>
+        <template v-if="user.userId">
           <div class="dropdown-header noti-title">
             <h6 class="text-overflow m-0">Welcome!</h6>
           </div>
@@ -91,10 +91,22 @@
             <i class="ni ni-single-02"></i>
             <span>My profile</span>
           </a>
+
           <div class="dropdown-divider"></div>
           <a @click.prevent="logout()" to="" class="dropdown-item">
             <i class="ni ni-user-run"></i>
             <span>Logout</span>
+          </a>
+        </template>
+
+        <template v-else>
+          <div class="dropdown-header noti-title">
+            <h6 class="text-overflow m-0">Welcome!</h6>
+          </div>
+
+          <a @click.prevent="login()" to="" class="dropdown-item">
+            <i class="ni ni-user-run"></i>
+            <span>Login</span>
           </a>
         </template>
       </base-dropdown>
@@ -119,6 +131,7 @@ export default {
   },
   async created() {
     this.user = await { ...store.getters.currentUser };
+    console.log(this.user.userId);
   },
   data() {
     return {
@@ -138,6 +151,11 @@ export default {
         params: { id: this.searchQuery }
       });
       this.searchQuery = "";
+    },
+    login() {
+      this.$router.push({
+        name: "Login"
+      });
     },
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);

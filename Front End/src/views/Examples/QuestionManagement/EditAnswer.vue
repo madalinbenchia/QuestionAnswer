@@ -102,20 +102,20 @@ export default {
     goBack() {
       this.$router.push({
         name: "View Question",
-        params: { id: this.answer.ParentId }
+        params: { id: this.answer.parentId }
       });
     },
 
     async handleSubmit() {
       try {
         this.user = await { ...this.$store.getters.currentUser };
-        this.answer.LastEditDate = moment().format();
-        this.answer.LastActivityDate = moment().format();
-        this.answer.CloseDate = moment().format();
-        this.answer.Tags = "";
-        this.answer.Title = "";
+        this.answer.lastEditDate = moment().format();
+        this.answer.lastActivityDate = moment().format();
+        this.answer.closeDate = moment().format();
+        this.answer.tags = "";
+        this.answer.title = "";
 
-        this.answer.LastEditorDisplayName = this.user.DisplayName;
+        this.answer.lastEditorDisplayName = this.user.DisplayName;
         this.answer.userId = this.user.userId;
         this.answer.tags = "tag";
         this.answer.title = "title";
