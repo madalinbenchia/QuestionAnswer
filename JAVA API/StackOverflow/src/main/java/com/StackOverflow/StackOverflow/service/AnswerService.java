@@ -7,6 +7,7 @@ import com.StackOverflow.StackOverflow.exception.post.EmptyQuestionListException
 import com.StackOverflow.StackOverflow.exception.post.QuestionNotFoundException;
 import com.StackOverflow.StackOverflow.exception.post.StringNullOrEmptyException;
 import com.StackOverflow.StackOverflow.model.Answer;
+import com.StackOverflow.StackOverflow.model.Comment;
 import com.StackOverflow.StackOverflow.model.User;
 import com.StackOverflow.StackOverflow.repository.AccountRepository;
 import com.StackOverflow.StackOverflow.repository.AnswerRepository;
@@ -132,7 +133,8 @@ public class AnswerService {
             List<Answer> result = answerRepository.GetAnswers(questionId);
             //if(!result.equals(null)) {
                 for (Answer answer : result) {
-                    answer.setComments(commentService.GetAllCommentsForAnAswer(answer.getId()));
+                	List<Comment> commentsTemp =commentService.GetAllCommentsForAnAswer(answer.getId()); 
+                    answer.setComments(commentsTemp);
                 }
                 return result;
             //}

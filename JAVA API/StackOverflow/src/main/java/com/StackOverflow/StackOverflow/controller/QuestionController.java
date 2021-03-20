@@ -191,7 +191,7 @@ public class QuestionController {
                     int id) {
         try {
             Question question = questionService.GetQuestionWithAnswers(id);
-            question.setAnswers(answerService.GetAnswers(question.getId()));
+            //question.setAnswers(answerService.GetAnswers(question.getId()));
             try {
             	question.setAnswerCount(question.getAnswers().size());
             }catch(Exception e)
